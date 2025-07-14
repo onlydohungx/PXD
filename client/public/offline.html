@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Phim Xuyên Đêm</title>
+  <link rel="icon" href="/logo-icon.svg" type="image/svg+xml" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+      color: #e2e8f0; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: rgba(30, 41, 59, 0.8);
+      padding: 40px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .icon {
+      font-size: 5rem;
+      margin-bottom: 24px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    h1 { 
+      color: #ef4444; 
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    
+    .status {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    
+    .status-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    
+    button { 
+      background: linear-gradient(45deg, #3b82f6, #1d4ed8); 
+      color: white; 
+      border: none; 
+      padding: 14px 24px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .secondary-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+    }
+    
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .tips {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: left;
+    }
+    
+    .tips h3 {
+      color: #60a5fa;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    
+    .tips ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .tips li {
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+      color: #cbd5e1;
+    }
+    
+    .tips li::before {
+      content: "💡";
+      position: absolute;
+      left: 0;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .icon {
+        font-size: 4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📱</div>
+    <h1>Bạn đang offline</h1>
+    <p class="subtitle">Không thể kết nối đến Phim Xuyên Đêm. Vui lòng kiểm tra kết nối mạng và thử lại.</p>
+    
+    <div class="status">
+      <div class="status-icon"></div>
+      <span>Không có kết nối Internet</span>
+    </div>
+    
+    <div class="actions">
+      <button onclick="location.reload()">🔄 Thử lại</button>
+      <button class="secondary-btn" onclick="goHome()">🏠 Về trang chủ</button>
+    </div>
+    
+    <div class="tips">
+      <h3>Gợi ý khắc phục:</h3>
+      <ul>
+        <li>Kiểm tra kết nối WiFi hoặc dữ liệu di động</li>
+        <li>Đảm bảo bạn có tín hiệu mạng ổn định</li>
+        <li>Thử tắt và bật lại WiFi</li>
+        <li>Kiểm tra router hoặc modem</li>
+        <li>Liên hệ nhà cung cấp dịch vụ Internet</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function goHome() {
+      if (navigator.onLine) {
+        window.location.href = '/';
+      } else {
+        alert('Vui lòng kiểm tra kết nối mạng trước khi tiếp tục.');
+      }
+    }
+    
+    // Auto refresh when online
+    window.addEventListener('online', function() {
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    });
+    
+    // Update status based on connection
+    function updateConnectionStatus() {
+      const status = document.querySelector('.status span');
+      const statusIcon = document.querySelector('.status-icon');
+      
+      if (navigator.onLine) {
+        status.textContent = 'Đã kết nối - Đang tải lại...';
+        statusIcon.style.background = '#10b981';
+        setTimeout(() => location.reload(), 2000);
+      } else {
+        status.textContent = 'Không có kết nối Internet';
+        statusIcon.style.background = '#ef4444';
+      }
+    }
+    
+    // Listen for connection changes
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+    
+    // Initial status check
+    updateConnectionStatus();
+  </script>
+</body>
+</html>

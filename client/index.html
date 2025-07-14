@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <title>Phim Xuyên Đêm | Phim Hay Không Ngủ</title>
+    <meta name="description" content="Trang web xem phim online chất lượng cao, cập nhật nhanh nhiều thể loại phim hot, phim mới nhất, phim thuyết minh, phim lồng tiếng." />
+    <meta name="keywords" content="Phim Xuyên Đêm, phimxuyendem, phim xuyen dem, phimdem, xem phim online, phim hay 2025, phim lẻ mới, phim bộ hot, phim miễn phí, phim chất lượng cao, xem phim không quảng cáo, phim vietsub, phim hay không ngủ" />
+    <meta name="author" content="TYNO Team" />
+
+    <!-- Preconnect to fonts (giảm DNS lookups) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload + async font -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" />
+    </noscript>
+
+    <!-- Preload CSS chính -->
+    <link rel="preload" href="/src/index.css" as="style" />
+    <link rel="stylesheet" href="/src/index.css" />
+
+    <!-- Progressive Web App + Mobile Settings -->
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Phim Xuyên Đêm" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    
+    <!-- Additional iOS standalone mode fixes -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
+    <link rel="icon" href="/logo-icon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="/favicon-32x32.png" />
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Preload main icon -->
+    <link rel="preload" href="/apple-touch-icon.png" as="image" type="image/png" />
+
+    <!-- iOS Standalone Mode Fix -->
+    <script>
+      // Prevent iOS Safari from exiting standalone mode on navigation
+      (function() {
+        'use strict';
+        
+        // Check if running in standalone mode
+        const isStandalone = () => {
+          return window.matchMedia('(display-mode: standalone)').matches || 
+                 window.navigator.standalone || 
+                 document.referrer.includes('android-app://');
+        };
+
+        // Only apply fixes if in standalone mode
+        if (isStandalone()) {
+          document.addEventListener('DOMContentLoaded', function() {
+            // Prevent external links from opening in Safari
+            document.addEventListener('click', function(e) {
+              const target = e.target.closest('a');
+              if (target && target.href) {
+                const url = new URL(target.href, window.location.href);
+                // If it's an external link, prevent default and handle appropriately
+                if (url.hostname !== window.location.hostname) {
+                  e.preventDefault();
+                  // For external links, you might want to show a modal or handle differently
+                  // For now, we'll just prevent them from opening
+                  return false;
+                }
+              }
+            });
+
+            // Ensure viewport is properly set for standalone mode
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+              viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+            }
+
+            // Register service worker for better iOS standalone experience
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('/sw.js');
+            }
+          });
+        }
+      })();
+
+      // Tắt lỗi overlay của Vite khi dev
+      if (location.hostname === 'localhost') {
+        window.addEventListener('DOMContentLoaded', () => {
+          const style = document.createElement('style');
+          style.textContent = `#vite-overlay { display: none !important; }`;
+          document.head.appendChild(style);
+
+          window.addEventListener('error', function (event) {
+            if (event.message?.includes('WebSocket')) {
+              event.preventDefault();
+            }
+          });
+        });
+      }
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWT1DL8CFF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-DWT1DL8CFF');
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- Load React App -->
+    <script type="module" src="/src/main.tsx" defer></script>
+  </body>
+</html>

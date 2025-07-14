@@ -1,0 +1,15 @@
+/* Custom CSS để ẩn overlay Vite */
+#vite-error-overlay,
+.vite-runtime-error,
+[id^="vite-overlay"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -9999 !important;
+  pointer-events: none !important;
+}
+
+/* Đảm bảo kiểu dáng vẫn đúng khi overlay hiển thị */
+body {
+  overflow: auto !important;
+}

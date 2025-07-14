@@ -1,0 +1,138 @@
+{
+  "name": "Phim Xuyên Đêm",
+  "short_name": "PXD",
+  "description": "Trang web xem phim online chất lượng cao, cập nhật nhanh nhiều thể loại phim hot",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["entertainment", "video", "multimedia"],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "lang": "vi",
+  "dir": "ltr",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "video/*": [".mp4", ".webm", ".avi", ".mkv"],
+        "application/x-subrip": [".srt"],
+        "text/vtt": [".vtt"]
+      }
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+movie",
+      "url": "/movie/%s"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Phim mới",
+      "short_name": "Phim mới",
+      "description": "Xem phim mới cập nhật",
+      "url": "/movies?sort=newest",
+      "icons": [{ "src": "/logo-icon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Phim hot",
+      "short_name": "Phim hot",
+      "description": "Xem phim hot nhất",
+      "url": "/movies?sort=popular",
+      "icons": [{ "src": "/logo-icon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Lịch sử xem",
+      "short_name": "Lịch sử",
+      "description": "Xem lại phim đã xem",
+      "url": "/profile/watch-history",
+      "icons": [{ "src": "/logo-icon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Yêu thích",
+      "short_name": "Yêu thích",
+      "description": "Danh sách phim yêu thích",
+      "url": "/profile/favorites",
+      "icons": [{ "src": "/logo-icon.svg", "sizes": "96x96" }]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "video",
+          "accept": ["video/*", ".mp4", ".webm", ".avi", ".mkv"]
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "src": "/images/screenshot-mobile.jpg",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "platform": "narrow",
+      "label": "Phim Xuyên Đêm trên điện thoại"
+    },
+    {
+      "src": "/images/screenshot-desktop.jpg", 
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Phim Xuyên Đêm trên máy tính"
+    }
+  ],
+  "handle_links": "preferred"
+}
