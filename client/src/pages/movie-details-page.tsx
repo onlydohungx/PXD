@@ -967,49 +967,124 @@ export default function MovieDetailsPage() {
 
                 {movie.actor && movie.actor.length > 0 ? (
                   <>
-                    <h3 className="text-sm md:text-base font-medium text-white mb-3 md:mb-4">Diễn viên tham gia</h3>
+                    {/* Enhanced header with decorative elements */}
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-full bg-gradient-to-br from-primary/30 to-secondary/20 backdrop-blur-sm border border-white/10">
+                          <User className="h-5 w-5 text-primary" />
+                        </div>
+                        <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+                          Diễn viên
+                        </h3>
+                      </div>
+                      <div className="flex-1 h-[1px] bg-gradient-to-r from-primary/50 via-white/10 to-transparent"></div>
+                    </div>
                     
                     {isActorImagesLoading ? (
-                      <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4">
+                      <div className="grid grid-cols-2 gap-6">
                         {movie.actor.map((actor: string, index: number) => (
-                          <div key={index} className="group flex flex-col items-center gap-1.5 md:gap-2">
-                            <div className="h-12 w-12 md:h-16 md:w-16 rounded-md border border-white/10 bg-black/40 shadow-lg animate-pulse" />
-                            <div className="h-2 w-12 bg-white/10 rounded animate-pulse" />
+                          <div key={index} className="group">
+                            <div className="aspect-[3/4] rounded-2xl border border-white/10 bg-black/40 shadow-2xl animate-pulse" />
+                            <div className="mt-4 space-y-2">
+                              <div className="h-5 bg-white/10 rounded animate-pulse" />
+                              <div className="h-4 bg-white/10 rounded animate-pulse w-3/4" />
+                            </div>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4">
+                      <div className="grid grid-cols-2 gap-6">
                         {movie.actor.map((actor: string, index: number) => {
                           const actorImage = actorImagesData?.actors?.find((a: any) => a.name === actor);
                           
                           return (
-                            <div key={index} className="group flex flex-col items-center gap-1.5 md:gap-2 transition-transform duration-300 hover:scale-105">
-                              <Avatar className="h-12 w-12 md:h-16 md:w-16 rounded-md border border-white/10 bg-black/40 shadow-lg">
+                            <motion.div 
+                              key={index} 
+                              className="group cursor-pointer"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1, duration: 0.6 }}
+                              whileHover={{ y: -8 }}
+                            >
+                              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-black/60 to-black/30 shadow-2xl group-hover:shadow-primary/20 transition-all duration-500">
+                                {/* Animated background glow */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                
                                 {actorImage?.imageUrl ? (
-                                  <AvatarImage 
+                                  <img 
                                     src={actorImage.imageUrl} 
                                     alt={actor}
-                                    className="object-cover rounded-md"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                   />
-                                ) : null}
-                                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/30 text-white rounded-md text-xs md:text-sm">
-                                  {actor.charAt(0)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <span className="text-[10px] md:text-xs text-white text-center font-medium group-hover:text-primary transition-colors line-clamp-2">
-                                {actor}
-                              </span>
-                            </div>
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/30 to-secondary/20 relative overflow-hidden">
+                                    {/* Animated background pattern */}
+                                    <div className="absolute inset-0 opacity-20">
+                                      <div className="absolute top-0 left-0 w-32 h-32 bg-white rounded-full blur-3xl -translate-x-16 -translate-y-16 group-hover:translate-x-8 group-hover:translate-y-8 transition-transform duration-1000" />
+                                      <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary rounded-full blur-2xl translate-x-12 translate-y-12 group-hover:-translate-x-4 group-hover:-translate-y-4 transition-transform duration-1000" />
+                                    </div>
+                                    <span className="text-5xl font-bold text-white/90 relative z-10 transition-transform duration-500 group-hover:scale-110">
+                                      {actor.charAt(0)}
+                                    </span>
+                                  </div>
+                                )}
+                                
+                                {/* Enhanced gradient overlays */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                
+                                {/* Subtle border glow effect */}
+                                <div className="absolute inset-0 rounded-2xl border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                
+                                {/* Actor info with enhanced styling */}
+                                <div className="absolute bottom-0 left-0 right-0 p-5 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                  <div className="space-y-1">
+                                    <h4 className="text-white font-bold text-lg leading-tight tracking-wide group-hover:text-primary transition-colors duration-300">
+                                      {actor}
+                                    </h4>
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full opacity-80" />
+                                      <p className="text-white/80 text-sm font-medium">
+                                        {index === 0 ? "Vai chính" : 
+                                         index === 1 ? "Vai phụ" : 
+                                         index === 2 ? "Vai phụ" : 
+                                         index === 3 ? "Vai phụ" : 
+                                         "Diễn viên"}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Subtle action indicator */}
+                                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                                    <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                                      <ExternalLink className="h-4 w-4 text-white/80" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
                           );
                         })}
                       </div>
                     )}
                   </>
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-8 md:py-12 text-center">
-                    <User className="h-10 w-10 md:h-12 md:w-12 text-white/10 mb-2 md:mb-3" />
-                    <p className="text-white/50 text-xs md:text-sm">Thông tin diễn viên đang được cập nhật...</p>
+                  <div className="flex flex-col items-center justify-center py-16 text-center relative">
+                    {/* Decorative background */}
+                    <div className="absolute inset-0 opacity-30">
+                      <div className="absolute top-8 left-1/3 w-20 h-20 bg-primary/20 rounded-full blur-2xl" />
+                      <div className="absolute bottom-8 right-1/3 w-16 h-16 bg-secondary/20 rounded-full blur-2xl" />
+                    </div>
+                    
+                    <div className="relative z-10 space-y-4">
+                      <div className="p-4 rounded-full bg-gradient-to-br from-black/60 to-black/30 border border-white/10 inline-block">
+                        <User className="h-12 w-12 text-white/30" />
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-white/70 text-lg font-medium">Thông tin diễn viên</h4>
+                        <p className="text-white/40 text-sm max-w-xs">Danh sách diễn viên đang được cập nhật. Vui lòng quay lại sau.</p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </TabsContent>
