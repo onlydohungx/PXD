@@ -53,6 +53,11 @@
   background: linear-gradient(180deg, rgba(147, 51, 234, 1), rgba(59, 130, 246, 1));
 }
 
+/* Font definitions */
+.font-calligraphy {
+  font-family: 'Zhi Mang Xing', cursive;
+}
+
 /* Tối ưu tải CSS */
 @tailwind base;
 @tailwind components;
