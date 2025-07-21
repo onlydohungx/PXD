@@ -6,6 +6,12 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { fetchCountryMovies, fetchMovies, fetchTrendingMovies, fetchTrendingTodayMovies } from "@/lib/api";
 
+// Helper function to extract YouTube video ID from URL
+function extractYouTubeId(url: string): string {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : '';
+}
 
 interface Movie {
   name: string;
@@ -311,29 +317,62 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
               {/* Video background when trailer is available */}
               {currentMovieWithDetails.trailer_url ? (
                 <div className="absolute inset-0 w-full h-full">
-                  <video
-                    key={currentMovieWithDetails.trailer_url}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback to image if video fails to load
-                      const img = document.createElement('img');
-                      img.src = currentMovie.thumb_url || currentMovie.poster_url || '/placeholder-movie.jpg';
-                      img.className = 'absolute inset-0 w-full h-full object-cover';
-                      e.currentTarget.parentNode?.replaceChild(img, e.currentTarget);
-                    }}
-                  >
-                    <source src={currentMovieWithDetails.trailer_url} type="video/mp4" />
-                    {/* Fallback image if video doesn't load */}
-                    <img
-                      src={currentMovie.thumb_url || currentMovie.poster_url || '/placeholder-movie.jpg'}
-                      alt={currentMovie.name}
+                  {/* Check if it's a YouTube URL */}
+                  {currentMovieWithDetails.trailer_url.includes('youtube.com') || currentMovieWithDetails.trailer_url.includes('youtu.be') ? (
+                    <>
+                      <iframe
+                        key={currentMovieWithDetails.trailer_url}
+                        src={`https://www.youtube.com/embed/${extractYouTubeId(currentMovieWithDetails.trailer_url)}?autoplay=1&mute=1&loop=1&playlist=${extractYouTubeId(currentMovieWithDetails.trailer_url)}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=1`}
+                        className="absolute inset-0 w-full h-full border-0"
+                        style={{ 
+                          width: '100%', 
+                          height: '100%',
+                          transform: 'scale(1.2)',
+                          pointerEvents: 'none'
+                        }}
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen={false}
+                        title="Movie Trailer"
+                        onError={() => {
+                          // Fallback to image if iframe fails
+                          console.log('YouTube iframe failed to load, falling back to image');
+                        }}
+                      />
+                      {/* Background image fallback for YouTube iframe */}
+                      <div 
+                        className="absolute inset-0 w-full h-full bg-cover bg-center transform scale-105 -z-10"
+                        style={{
+                          backgroundImage: `url(${currentMovie.thumb_url || currentMovie.poster_url})`,
+                          filter: 'brightness(0.85) contrast(1.1)'
+                        }}
+                      />
+                    </>
+                  ) : (
+                    /* For direct video URLs */
+                    <video
+                      key={currentMovieWithDetails.trailer_url}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
                       className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </video>
+                      onError={(e) => {
+                        // Fallback to image if video fails to load
+                        const img = document.createElement('img');
+                        img.src = currentMovie.thumb_url || currentMovie.poster_url || '/placeholder-movie.jpg';
+                        img.className = 'absolute inset-0 w-full h-full object-cover';
+                        e.currentTarget.parentNode?.replaceChild(img, e.currentTarget);
+                      }}
+                    >
+                      <source src={currentMovieWithDetails.trailer_url} type="video/mp4" />
+                      {/* Fallback image if video doesn't load */}
+                      <img
+                        src={currentMovie.thumb_url || currentMovie.poster_url || '/placeholder-movie.jpg'}
+                        alt={currentMovie.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </video>
+                  )}
                 </div>
               ) : (
                 /* Fallback image background for desktop when no trailer */
