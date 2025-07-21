@@ -292,7 +292,7 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
       className="relative mb-12 rounded-3xl overflow-hidden shadow-2xl mt-0 border border-white/5"
     >
       {/* Hero Container with optimized height for Mobile and Desktop */}
-      <div className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden">
+      <div className="relative w-full h-[90vh] md:h-[90vh] overflow-hidden">
         {/* Background - Video on Desktop, Image on Mobile */}
         <motion.div 
           key={currentMovie.slug}
@@ -347,13 +347,13 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
               )}
             </div>
           ) : (
-            /* Mobile: Image Background - optimized to prevent cropping */
+            /* Mobile: Enhanced Image Background with subtle animation */
             <div 
-              className="absolute inset-0 w-full h-full bg-cover bg-center transform scale-105"
+              className="absolute inset-0 w-full h-full bg-cover bg-center transform scale-110 transition-all duration-700 ease-out"
               style={{
                 backgroundImage: `url(${currentMovie.thumb_url || currentMovie.poster_url})`,
-                filter: 'brightness(0.75) contrast(1.1)',
-                backgroundPosition: 'center top'
+                filter: 'brightness(0.7) contrast(1.2) saturate(1.1)',
+                backgroundPosition: 'center center'
               }}
             />
           )}
@@ -369,10 +369,13 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/50 via-black/20 to-transparent z-10"></div>
         
         {/* Enhanced bottom content area with sophisticated gradient - stronger on mobile */}
-        <div className="absolute bottom-0 left-0 right-0 h-3/5 bg-gradient-to-t from-black/90 via-black/60 to-transparent md:from-black/80 md:via-black/40 z-10"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-4/5 bg-gradient-to-t from-black/95 via-black/70 to-transparent md:h-3/5 md:from-black/80 md:via-black/40 z-10"></div>
         
-        {/* Left content area with premium gradient - mobile optimized */}
-        <div className="absolute left-0 top-0 bottom-0 w-full md:w-3/4 bg-gradient-to-r from-black/80 via-black/40 to-transparent md:from-black/70 md:via-black/30 z-10"></div>
+        {/* Mobile: Full overlay for better content visibility */}
+        <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 z-10"></div>
+        
+        {/* Desktop: Left content area with premium gradient */}
+        <div className="hidden md:block absolute left-0 top-0 bottom-0 w-3/4 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10"></div>
         
         {/* Enhanced atmospheric light effects */}
         <div className="absolute -left-20 top-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-blue-600/12 to-purple-600/12 blur-[100px] opacity-60 hidden md:block animate-pulse"></div>
@@ -479,189 +482,125 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
         <div className="absolute inset-0 z-20 flex items-end md:items-center">
           <div className="container mx-auto px-4 md:px-12 pb-8 md:pb-0 pt-12 md:pt-20">
             <div className="md:grid md:grid-cols-12 gap-8 items-center">
-              {/* Mobile layout with poster */}
+              {/* Mobile layout with improved design */}
               <div className="md:hidden mb-8">
-                <div className="flex items-end gap-4">
-                  {/* Mobile poster - compact and well-positioned */}
+
+
+                {/* Main content with centered poster */}
+                <div className="text-center">
+                  {/* Mobile poster - centered and larger */}
                   <motion.div 
                     key={`mobile-poster-${currentMovie.slug}`}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="flex-shrink-0"
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="inline-block mb-6"
                   >
-                    <div className="relative w-[120px] h-[180px] rounded-2xl overflow-hidden shadow-xl border border-white/20 group">
-                      {/* Subtle background glow */}
-                      <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 to-secondary/30 rounded-2xl blur-md opacity-70"></div>
+                    <div className="relative w-[160px] h-[240px] mx-auto rounded-3xl overflow-hidden shadow-2xl border border-white/30 group animate-bounce-slow">
+                      {/* Enhanced glow effect */}
+                      <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 via-secondary/40 to-primary/40 rounded-3xl blur-xl opacity-80 animate-pulse"></div>
                       
                       {/* Poster image */}
                       <img 
                         src={currentMovie.poster_url || currentMovie.thumb_url} 
                         alt={currentMovie.name}
-                        className="w-full h-full object-cover relative z-10 transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover relative z-10 transition-all duration-500 group-hover:scale-105"
                       />
                       
-                      {/* Rating badge - mobile optimized */}
+                      {/* Play overlay on hover */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 bg-black/40 backdrop-blur-sm">
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-xl">
+                          <Play className="h-6 w-6 text-white ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                      
+                      {/* Rating badge - top right */}
                       {rating && (
-                        <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold text-xs rounded-lg h-8 w-8 flex flex-col items-center justify-center shadow-lg z-20">
-                          <Star className="h-2 w-2 fill-current mb-0.5" />
-                          <span className="text-[10px]">{rating}</span>
+                        <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold text-sm rounded-xl h-10 w-10 flex flex-col items-center justify-center shadow-xl z-20">
+                          <Star className="h-3 w-3 fill-current mb-0.5" />
+                          <span className="text-xs">{rating}</span>
                         </div>
                       )}
                       
-                      {/* Quality badge - mobile optimized */}
+                      {/* Quality badge - bottom left */}
                       {currentMovie.quality && (
-                        <div className="absolute bottom-2 left-2 bg-gradient-to-r from-primary to-secondary text-white font-bold text-[10px] rounded-lg px-2 py-1 shadow-lg z-20">
+                        <div className="absolute bottom-3 left-3 bg-gradient-to-r from-primary to-secondary text-white font-bold text-xs rounded-xl px-3 py-1.5 shadow-xl z-20">
                           <span>{currentMovie.quality}</span>
                         </div>
                       )}
                     </div>
                   </motion.div>
                   
-                  {/* Mobile movie info - compact layout */}
-                  <div className="flex-1 min-w-0">
-                    {/* Movie type indicator */}
-                    <motion.div
-                      key={`mobile-type-${currentMovie.slug}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="mb-2"
-                    >
-                      <div className="bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md inline-flex items-center gap-1">
-                        {currentIndex === 0 ? (
-                          <>
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                            </svg>
-                            Đề Xuất
-                          </>
-                        ) : currentIndex <= 2 ? (
-                          <>
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
-                            </svg>
-                            Mới Cập Nhật
-                          </>
-                        ) : (
-                          <>
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
-                            </svg>
-                            Hàn Quốc
-                          </>
-                        )}
+                  {/* Title - centered and larger */}
+                  <motion.h1 
+                    key={`mobile-title-${currentMovie.slug}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="text-2xl font-bold text-white leading-tight mb-4 font-calligraphy px-4"
+                  >
+                    {currentMovie.name}
+                  </motion.h1>
+                  
+                  {/* Info badges - centered layout */}
+                  <motion.div 
+                    key={`mobile-info-${currentMovie.slug}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="flex justify-center flex-wrap items-center gap-3 mb-6"
+                  >
+                    {currentMovie.year && (
+                      <div className="flex items-center gap-1.5 text-sm bg-black/70 border border-white/30 rounded-xl px-3 py-2 text-white shadow-lg backdrop-blur-sm">
+                        <Calendar className="h-4 w-4" />
+                        <span>{currentMovie.year}</span>
                       </div>
-                    </motion.div>
+                    )}
                     
-
-                    {/* Title - mobile optimized */}
-                    <motion.h1 
-                      key={`mobile-title-${currentMovie.slug}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-xl font-bold text-white leading-tight mb-2 line-clamp-2 font-calligraphy"
+                    {currentMovie.time && (
+                      <div className="flex items-center gap-1.5 text-sm bg-black/70 border border-white/30 rounded-xl px-3 py-2 text-white shadow-lg backdrop-blur-sm">
+                        <Clock className="h-4 w-4" />
+                        <span>{currentMovie.time}</span>
+                      </div>
+                    )}
+                  </motion.div>
+                  
+                  {/* Action buttons - centered and enhanced */}
+                  <motion.div 
+                    key={`mobile-buttons-${currentMovie.slug}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="flex justify-center items-center gap-4"
+                  >
+                    <Button
+                      asChild
+                      size="lg"
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-2xl text-sm h-12 px-8 shadow-xl font-semibold"
                     >
-                      {currentMovie.name}
-                    </motion.h1>
+                      <Link href={`/watch/${currentMovie.slug}`}>
+                        <Play className="h-4 w-4 mr-2" fill="currentColor" />
+                        Xem Ngay
+                      </Link>
+                    </Button>
                     
-                    {/* Info badges - mobile compact */}
-                    <motion.div 
-                      key={`mobile-info-${currentMovie.slug}`}
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.1 }}
-                      className="flex flex-wrap items-center gap-2 mb-3"
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="bg-black/70 border-white/40 text-white hover:bg-white/10 rounded-2xl text-sm h-12 px-6 backdrop-blur-sm shadow-xl font-semibold"
                     >
-                      {currentMovie.year && (
-                        <div className="flex items-center gap-1 text-xs bg-black/60 border border-white/30 rounded-md px-2 py-1 text-white">
-                          <Calendar className="h-3 w-3" />
-                          <span>{currentMovie.year}</span>
-                        </div>
-                      )}
-                      
-                      {currentMovie.time && (
-                        <div className="flex items-center gap-1 text-xs bg-black/60 border border-white/30 rounded-md px-2 py-1 text-white">
-                          <Clock className="h-3 w-3" />
-                          <span>{currentMovie.time}</span>
-                        </div>
-                      )}
-                    </motion.div>
-                    
-                    {/* Action buttons - mobile compact */}
-                    <motion.div 
-                      key={`mobile-buttons-${currentMovie.slug}`}
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Button
-                        asChild
-                        size="sm"
-                        className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-full text-xs h-8 px-4 shadow-lg"
-                      >
-                        <Link href={`/watch/${currentMovie.slug}`}>
-                          <Play className="h-3 w-3 mr-1" fill="currentColor" />
-                          Xem
-                        </Link>
-                      </Button>
-                      
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="sm"
-                        className="bg-black/60 border-white/30 text-white rounded-full text-xs h-8 px-3"
-                      >
-                        <Link href={`/movie/${currentMovie.slug}`}>
-                          <Info className="h-3 w-3 mr-1" />
-                          Chi tiết
-                        </Link>
-                      </Button>
-                    </motion.div>
-                  </div>
+                      <Link href={`/movie/${currentMovie.slug}`}>
+                        <Info className="h-4 w-4 mr-2" />
+                        Chi Tiết
+                      </Link>
+                    </Button>
+                  </motion.div>
                 </div>
               </div>
               
               {/* Left column for movie details - optimized for desktop */}
               <div className="hidden md:flex md:col-span-7 flex-col items-start">
-                {/* Movie type indicator */}
-                <motion.div
-                  key={`type-${currentMovie.slug}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex mb-4"
-                >
-                  <div className="relative bg-gradient-to-r from-primary to-secondary text-white px-5 py-1.5 rounded-full text-sm font-semibold shadow-md overflow-hidden group">
-                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div className="relative flex items-center gap-1.5">
-                      {currentIndex === 0 ? (
-                        <>
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                          </svg>
-                          Phim Đề Xuất
-                        </>
-                      ) : currentIndex <= 2 ? (
-                        <>
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
-                          </svg>
-                          Phim Mới Cập Nhật
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
-                          </svg>
-                          Phim Hàn Quốc
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
                 
                 {/* Category pill - visible only on desktop for cleaner mobile view */}
                 {categories.length > 0 && (
