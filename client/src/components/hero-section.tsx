@@ -561,7 +561,7 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6 }}
-                      className="text-xl font-bold text-white leading-tight mb-2 line-clamp-2"
+                      className="text-xl font-bold text-white leading-tight mb-2 line-clamp-2 font-calligraphy"
                     >
                       {currentMovie.name}
                     </motion.h1>
@@ -689,7 +689,7 @@ export function HeroSection({ movie: initialMovie }: HeroSectionProps) {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7 }}
-                    className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight md:leading-none drop-shadow-md mb-3 md:mb-4"
+                    className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight md:leading-none drop-shadow-md mb-3 md:mb-4 font-calligraphy"
                   >
                     {currentMovie.name}
                   </motion.h1>
