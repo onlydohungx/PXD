@@ -101,20 +101,8 @@ export function LoadingScreen() {
     >
 
 
-      {/* Animated gradient background */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360],
-          opacity: [0.03, 0.08, 0.03]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute w-[800px] h-[800px] rounded-full bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 blur-3xl"
-      />
+      {/* Static gradient background - removed animations for better performance */}
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 blur-2xl" />
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center">
@@ -203,57 +191,19 @@ export function LoadingScreen() {
           </div>
         </motion.div>
 
-        {/* Floating icons */}
+        {/* Static decorative icons - removed animations for better performance */}
         <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            animate={{
-              y: [-10, -30, -10],
-              x: [0, 15, 0],
-              rotate: [0, 10, 0]
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute top-1/4 left-1/4 text-primary/20"
-          >
+          <div className="absolute top-1/4 left-1/4 text-primary/10">
             <Play className="w-6 h-6" />
-          </motion.div>
+          </div>
           
-          <motion.div
-            animate={{
-              y: [-15, -35, -15],
-              x: [0, -20, 0],
-              rotate: [0, -15, 0]
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-            className="absolute top-1/3 right-1/4 text-secondary/20"
-          >
+          <div className="absolute top-1/3 right-1/4 text-secondary/10">
             <Sparkles className="w-5 h-5" />
-          </motion.div>
+          </div>
           
-          <motion.div
-            animate={{
-              y: [-20, -40, -20],
-              x: [0, 10, 0],
-              rotate: [0, 20, 0]
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-            className="absolute bottom-1/3 left-1/3 text-primary/20"
-          >
+          <div className="absolute bottom-1/3 left-1/3 text-primary/10">
             <Film className="w-4 h-4" />
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>
