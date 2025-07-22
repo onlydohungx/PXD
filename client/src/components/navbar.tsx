@@ -106,7 +106,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 w-full bg-gradient-to-r from-background/20 via-primary/5 to-background/20">
+    <header className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ${isScrolled ? 'glass-nav shadow-lg' : 'bg-transparent'}`}>
       {/* Auth Modal */}
       {showAuthModal && !user && (
         <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
