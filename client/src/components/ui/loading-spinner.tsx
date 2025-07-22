@@ -92,24 +92,29 @@ export function LoadingSpinner({
 
 export function LoadingCard() {
   return (
-    <div className="bg-black/30 backdrop-blur-sm rounded-lg border border-white/10 p-6">
-      <motion.div
-        animate={{
-          opacity: [0.5, 1, 0.5]
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="flex flex-col items-center text-center space-y-4"
-      >
-        <LoadingSpinner size="lg" variant="film" />
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-2">Đang tải...</h3>
-          <p className="text-sm text-white/60">Vui lòng chờ trong giây lát</p>
+    <div className="movie-card-premium h-full flex flex-col relative overflow-hidden animate-pulse">
+      <div className="relative aspect-[2/3] skeleton-premium rounded-t-[20px]">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {/* Fake badges for skeleton */}
+        <div className="absolute top-3 left-3 w-12 h-6 skeleton-premium rounded-full" />
+        <div className="absolute top-3 right-3 w-8 h-6 skeleton-premium rounded-full" />
+        
+        {/* Loading spinner in center */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LoadingSpinner size="md" variant="film" />
         </div>
-      </motion.div>
+      </div>
+      
+      <div className="movie-card-content p-5 relative flex-1 flex flex-col justify-between min-h-[110px]">
+        <div className="space-y-3">
+          <div className="h-4 skeleton-premium rounded-lg" />
+          <div className="h-3 skeleton-premium rounded-lg w-3/4" />
+        </div>
+        <div className="flex items-center justify-between mt-auto pt-3">
+          <div className="h-7 skeleton-premium rounded-md w-20" />
+          <div className="h-7 skeleton-premium rounded-full w-12" />
+        </div>
+      </div>
     </div>
   );
 }
