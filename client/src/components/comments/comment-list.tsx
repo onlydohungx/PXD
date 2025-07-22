@@ -13,7 +13,7 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Edit, Trash2, Reply, Star } from "lucide-react";
+import { Edit, Trash2, Reply, Star, MoreVertical, MessageCircle, User, Heart, ThumbsUp } from "lucide-react";
 import { 
   Dialog,
   DialogContent,
@@ -29,6 +29,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 // Import axios để sử dụng trực tiếp với API endpoint
 import axios from "axios";
 
@@ -618,251 +620,409 @@ export function CommentList({ movieSlug }: CommentListProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Bình luận ({comments.length})</h2>
-      
-      {/* Form thêm bình luận mới */}
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Header Section */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-primary/10 rounded-full">
+            <MessageCircle className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">Bình luận</h2>
+            <p className="text-muted-foreground mt-1">
+              {comments.length === 0 ? 'Chưa có bình luận nào' : `${comments.length} bình luận`}
+            </p>
+          </div>
+        </div>
+        {comments.length > 0 && (
+          <Badge variant="secondary" className="px-3 py-1">
+            {mainComments.length} bình luận gốc
+          </Badge>
+        )}
+      </div>
+
+      {/* Add Comment Form */}
       {isAuthenticated ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Thêm bình luận của bạn</CardTitle>
+        <Card className="border-2 border-dashed border-primary/20 hover:border-primary/40 transition-colors duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10">
+                <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                  {user?.username?.substring(0, 2).toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-lg">Chia sẻ ý kiến của bạn</CardTitle>
+                <p className="text-sm text-muted-foreground">Bạn nghĩ gì về bộ phim này?</p>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             {renderRatingSelector()}
-            <Textarea
-              placeholder="Viết bình luận của bạn về bộ phim này..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="min-h-[100px]"
-            />
+            <div className="relative">
+              <Textarea
+                placeholder="Viết bình luận của bạn về bộ phim này... Hãy chia sẻ cảm nhận chân thật nhất!"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="min-h-[120px] resize-none border-2 focus:border-primary/50 transition-colors"
+              />
+              <div className="absolute bottom-3 right-3 text-xs text-muted-foreground">
+                {newComment.length}/1000
+              </div>
+            </div>
           </CardContent>
-          <CardFooter className="flex justify-end">
+          <CardFooter className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">
+              Đăng nhập với tư cách <span className="font-medium text-primary">{user?.username}</span>
+            </p>
             <Button 
               onClick={handleAddComment}
-              disabled={addCommentMutation.isPending}
+              disabled={addCommentMutation.isPending || !newComment.trim()}
+              className="px-6"
             >
-              {addCommentMutation.isPending ? "Đang gửi..." : "Gửi bình luận"}
+              {addCommentMutation.isPending ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Đang gửi...
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Gửi bình luận
+                </>
+              )}
             </Button>
           </CardFooter>
         </Card>
       ) : (
-        <Card className="bg-muted/50">
-          <CardContent className="pt-6">
-            <p className="text-center">Vui lòng đăng nhập để thêm bình luận</p>
+        <Card className="border-2 border-dashed border-muted-foreground/20">
+          <CardContent className="py-12">
+            <div className="text-center space-y-4">
+              <div className="p-4 bg-muted/50 rounded-full w-fit mx-auto">
+                <User className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-lg font-medium">Bạn cần đăng nhập để bình luận</p>
+                <p className="text-muted-foreground">Chia sẻ ý kiến của bạn về bộ phim này</p>
+              </div>
+              <Button variant="outline" className="mt-4">
+                Đăng nhập ngay
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Danh sách bình luận */}
-      <div className="space-y-4">
-        {mainComments.length === 0 ? (
-          <p className="text-center text-muted-foreground py-6">Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
-        ) : (
-          mainComments.map((comment: any) => (
-            <div key={comment.id} className="space-y-3">
-              <Card>
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center gap-2">
-                      <Avatar>
-                        <AvatarFallback>{comment.username?.substring(0, 2).toUpperCase() || 'U'}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{comment.username || "Người dùng ẩn danh"}</div>
-                        <div className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</div>
-                      </div>
-                    </div>
-                    {canModifyComment(comment.userId) && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">...</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setEditingComment({
-                            id: comment.id,
-                            content: comment.content
-                          })}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            <span>Chỉnh sửa</span>
-                          </DropdownMenuItem>
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                <span>Xóa</span>
-                              </DropdownMenuItem>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Xác nhận xóa</DialogTitle>
-                              </DialogHeader>
-                              <p>Bạn có chắc chắn muốn xóa bình luận này không?</p>
-                              <DialogFooter>
-                                <DialogClose asChild>
-                                  <Button variant="outline">Hủy</Button>
-                                </DialogClose>
-                                <Button 
-                                  variant="destructive" 
-                                  onClick={() => handleDeleteComment(comment.id)}
-                                  disabled={isDeleting}
-                                >
-                                  {isDeleting ? "Đang xóa..." : "Xóa"}
-                                </Button>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-2">
-                    {renderStars(comment.rating)}
-                  </div>
-                  <p>{comment.content}</p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <div></div>
-                  {isAuthenticated && (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setReplyingTo(comment.id)}
-                    >
-                      <Reply className="mr-2 h-4 w-4" />
-                      Trả lời
-                    </Button>
-                  )}
-                </CardFooter>
-              </Card>
+      <Separator className="my-8" />
 
-              {/* Form trả lời bình luận */}
-              {replyingTo === comment.id && (
-                <Card className="ml-8 bg-muted/30">
-                  <CardContent className="pt-4">
-                    <Textarea
-                      placeholder={`Trả lời bình luận của ${comment.username || "người dùng"}...`}
-                      value={replyContent}
-                      onChange={(e) => setReplyContent(e.target.value)}
-                      className="min-h-[80px]"
-                    />
+      {/* Comments List */}
+      <div className="space-y-6">
+        {mainComments.length === 0 ? (
+          <div className="text-center py-16 space-y-4">
+            <div className="p-6 bg-muted/20 rounded-full w-fit mx-auto">
+              <MessageCircle className="h-12 w-12 text-muted-foreground/50" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-muted-foreground">Chưa có bình luận nào</h3>
+              <p className="text-muted-foreground mt-2">
+                Hãy là người đầu tiên chia sẻ ý kiến về bộ phim này!
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {mainComments.map((comment: any) => (
+              <div key={comment.id} className="group">
+                {/* Main Comment */}
+                <Card className="border-l-4 border-l-primary/20 hover:border-l-primary/60 transition-all duration-300 hover:shadow-lg">
+                  <CardHeader className="pb-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-start gap-4">
+                        <Avatar className="h-12 w-12 border-2 border-primary/20">
+                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-medium">
+                            {comment.username?.substring(0, 2).toUpperCase() || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-1">
+                            <h4 className="font-semibold text-lg">
+                              {comment.username || "Người dùng ẩn danh"}
+                            </h4>
+                            {comment.rating && (
+                              <Badge variant="outline" className="px-2 py-1">
+                                {comment.rating}/10 ⭐
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {formatDate(comment.createdAt)}
+                            {comment.updatedAt !== comment.createdAt && " • Đã chỉnh sửa"}
+                          </p>
+                        </div>
+                      </div>
+                      {canModifyComment(comment.userId) && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem onClick={() => setEditingComment({
+                              id: comment.id,
+                              content: comment.content
+                            })}>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Chỉnh sửa
+                            </DropdownMenuItem>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                  <Trash2 className="mr-2 h-4 w-4" />
+                                  Xóa bình luận
+                                </DropdownMenuItem>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Xác nhận xóa bình luận</DialogTitle>
+                                </DialogHeader>
+                                <p>Bạn có chắc chắn muốn xóa bình luận này không? Hành động này không thể hoàn tác.</p>
+                                <DialogFooter>
+                                  <DialogClose asChild>
+                                    <Button variant="outline">Hủy bỏ</Button>
+                                  </DialogClose>
+                                  <Button 
+                                    variant="destructive" 
+                                    onClick={() => handleDeleteComment(comment.id)}
+                                    disabled={isDeleting}
+                                  >
+                                    {isDeleting ? "Đang xóa..." : "Xóa"}
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-4">
+                    {comment.rating && (
+                      <div className="flex items-center gap-1 mb-3">
+                        {Array.from({ length: comment.rating }).map((_, i) => (
+                          <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
+                        ))}
+                        {Array.from({ length: 10 - comment.rating }).map((_, i) => (
+                          <Star key={i + comment.rating} size={16} className="text-gray-300" />
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-base leading-relaxed text-foreground">
+                      {comment.content}
+                    </p>
                   </CardContent>
-                  <CardFooter className="flex justify-end gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setReplyingTo(null)}
-                    >
-                      Hủy
-                    </Button>
-                    <Button 
-                      size="sm"
-                      onClick={handleAddReply}
-                      disabled={addReplyMutation.isPending}
-                    >
-                      {addReplyMutation.isPending ? "Đang gửi..." : "Gửi trả lời"}
-                    </Button>
+                  <CardFooter className="flex justify-between items-center pt-0">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      {getReplies(comment.id).length > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Reply className="h-3 w-3" />
+                          {getReplies(comment.id).length} trả lời
+                        </span>
+                      )}
+                    </div>
+                    {isAuthenticated && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => setReplyingTo(comment.id)}
+                        className="text-primary hover:text-primary hover:bg-primary/10"
+                      >
+                        <Reply className="mr-2 h-4 w-4" />
+                        Trả lời
+                      </Button>
+                    )}
                   </CardFooter>
                 </Card>
-              )}
 
-              {/* Hiển thị các trả lời cho bình luận này */}
-              {getReplies(comment.id).length > 0 && (
-                <div className="space-y-2 ml-8">
-                  {getReplies(comment.id).map((reply: any) => (
-                    <Card key={reply.id} className="bg-muted/30">
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-2">
-                            <Avatar>
-                              <AvatarFallback>{reply.username?.substring(0, 2).toUpperCase() || 'U'}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="font-medium">{reply.username || "Người dùng ẩn danh"}</div>
-                              <div className="text-xs text-muted-foreground">{formatDate(reply.createdAt)}</div>
-                            </div>
-                          </div>
-                          {canModifyComment(reply.userId) && (
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">...</Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => setEditingComment({
-                                  id: reply.id,
-                                  content: reply.content
-                                })}>
-                                  <Edit className="mr-2 h-4 w-4" />
-                                  <span>Chỉnh sửa</span>
-                                </DropdownMenuItem>
-                                <Dialog>
-                                  <DialogTrigger asChild>
-                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                      <Trash2 className="mr-2 h-4 w-4" />
-                                      <span>Xóa</span>
-                                    </DropdownMenuItem>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogHeader>
-                                      <DialogTitle>Xác nhận xóa</DialogTitle>
-                                    </DialogHeader>
-                                    <p>Bạn có chắc chắn muốn xóa bình luận này không?</p>
-                                    <DialogFooter>
-                                      <DialogClose asChild>
-                                        <Button variant="outline">Hủy</Button>
-                                      </DialogClose>
-                                      <Button 
-                                        variant="destructive" 
-                                        onClick={() => handleDeleteComment(reply.id)}
-                                        disabled={deleteCommentMutation.isPending}
-                                      >
-                                        {deleteCommentMutation.isPending ? "Đang xóa..." : "Xóa"}
-                                      </Button>
-                                    </DialogFooter>
-                                  </DialogContent>
-                                </Dialog>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          )}
+                {/* Reply Form */}
+                {replyingTo === comment.id && (
+                  <div className="ml-8 mt-4 animate-in slide-in-from-left-5 duration-300">
+                    <Card className="border-dashed border-primary/30">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                              {user?.username?.substring(0, 2).toUpperCase() || 'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <p className="text-sm font-medium">
+                            Trả lời bình luận của <span className="text-primary">{comment.username || "người dùng"}</span>
+                          </p>
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p>{reply.content}</p>
+                        <Textarea
+                          placeholder="Viết trả lời của bạn..."
+                          value={replyContent}
+                          onChange={(e) => setReplyContent(e.target.value)}
+                          className="min-h-[80px] resize-none"
+                          autoFocus
+                        />
                       </CardContent>
+                      <CardFooter className="flex justify-end gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setReplyingTo(null);
+                            setReplyContent("");
+                          }}
+                        >
+                          Hủy
+                        </Button>
+                        <Button 
+                          size="sm"
+                          onClick={handleAddReply}
+                          disabled={addReplyMutation.isPending || !replyContent.trim()}
+                        >
+                          {addReplyMutation.isPending ? "Đang gửi..." : "Gửi trả lời"}
+                        </Button>
+                      </CardFooter>
                     </Card>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
+                  </div>
+                )}
+
+                {/* Replies */}
+                {getReplies(comment.id).length > 0 && (
+                  <div className="ml-8 mt-4 space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                      <div className="h-px bg-border flex-1"></div>
+                      <span className="px-2 bg-background">
+                        {getReplies(comment.id).length} trả lời
+                      </span>
+                      <div className="h-px bg-border flex-1"></div>
+                    </div>
+                    {getReplies(comment.id).map((reply: any) => (
+                      <Card key={reply.id} className="bg-muted/30 border-l-2 border-l-muted-foreground/30">
+                        <CardHeader className="pb-3">
+                          <div className="flex justify-between items-start">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-9 w-9">
+                                <AvatarFallback className="bg-muted text-muted-foreground text-sm">
+                                  {reply.username?.substring(0, 2).toUpperCase() || 'U'}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <h5 className="font-medium">
+                                  {reply.username || "Người dùng ẩn danh"}
+                                </h5>
+                                <p className="text-xs text-muted-foreground">
+                                  {formatDate(reply.createdAt)}
+                                  {reply.updatedAt !== reply.createdAt && " • Đã chỉnh sửa"}
+                                </p>
+                              </div>
+                            </div>
+                            {canModifyComment(reply.userId) && (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <MoreVertical className="h-3 w-3" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem onClick={() => setEditingComment({
+                                    id: reply.id,
+                                    content: reply.content
+                                  })}>
+                                    <Edit className="mr-2 h-4 w-4" />
+                                    Chỉnh sửa
+                                  </DropdownMenuItem>
+                                  <Dialog>
+                                    <DialogTrigger asChild>
+                                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        Xóa
+                                      </DropdownMenuItem>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                      <DialogHeader>
+                                        <DialogTitle>Xác nhận xóa trả lời</DialogTitle>
+                                      </DialogHeader>
+                                      <p>Bạn có chắc chắn muốn xóa trả lời này không?</p>
+                                      <DialogFooter>
+                                        <DialogClose asChild>
+                                          <Button variant="outline">Hủy</Button>
+                                        </DialogClose>
+                                        <Button 
+                                          variant="destructive" 
+                                          onClick={() => handleDeleteComment(reply.id)}
+                                          disabled={deleteCommentMutation.isPending}
+                                        >
+                                          {deleteCommentMutation.isPending ? "Đang xóa..." : "Xóa"}
+                                        </Button>
+                                      </DialogFooter>
+                                    </DialogContent>
+                                  </Dialog>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <p className="text-sm leading-relaxed">
+                            {reply.content}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
 
-      {/* Dialog chỉnh sửa bình luận */}
+      {/* Edit Comment Dialog */}
       {editingComment && (
         <Dialog open={!!editingComment} onOpenChange={(open) => !open && setEditingComment(null)}>
-          <DialogContent>
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Chỉnh sửa bình luận</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                <Edit className="h-5 w-5" />
+                Chỉnh sửa bình luận
+              </DialogTitle>
             </DialogHeader>
-            <Textarea
-              value={editingComment.content}
-              onChange={(e) => setEditingComment({...editingComment, content: e.target.value})}
-              className="min-h-[100px]"
-            />
+            <div className="space-y-4">
+              <Textarea
+                value={editingComment.content}
+                onChange={(e) => setEditingComment({...editingComment, content: e.target.value})}
+                className="min-h-[120px] resize-none"
+                placeholder="Nhập nội dung bình luận..."
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {editingComment.content?.length || 0}/1000 ký tự
+              </div>
+            </div>
             <DialogFooter>
               <Button 
                 variant="outline" 
                 onClick={() => setEditingComment(null)}
               >
-                Hủy
+                Hủy bỏ
               </Button>
               <Button 
                 onClick={handleUpdateComment}
-                disabled={updateCommentMutation.isPending}
+                disabled={updateCommentMutation.isPending || !editingComment.content?.trim()}
               >
-                {updateCommentMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}
+                {updateCommentMutation.isPending ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Đang cập nhật...
+                  </>
+                ) : (
+                  "Cập nhật"
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
