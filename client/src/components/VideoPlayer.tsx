@@ -1203,27 +1203,27 @@ export default function VideoPlayer({
       {/* Mobile Controls - Nút chế độ chiếu rạp ẩn khi toàn màn hình */}
       {isMobile && (
         <>
-          {/* Nút chế độ chiếu rạp - Ẩn khi ở chế độ toàn màn hình */}
+          {/* Compact Theater Mode Button - Hidden when fullscreen */}
           {!isFullscreen && (
             <button
               onClick={toggleTheaterMode}
-              className="absolute bottom-[20%] right-[20%] z-30 p-3 rounded-full bg-gradient-to-r from-[#ff4f9b80] to-[#60a5fa80] shadow-lg border border-white/20"
+              className="absolute bottom-[20%] right-[20%] z-30 p-2 rounded-full bg-black/60 backdrop-blur-sm shadow-lg border border-white/10 hover:bg-black/80 transition-all"
               aria-label={isTheaterMode ? "Thoát chế độ chiếu rạp" : "Chế độ chiếu rạp"}
             >
-              <Lightbulb className="w-6 h-6 text-white" strokeWidth={2} />
+              <Lightbulb className="w-4 h-4 text-white" strokeWidth={2} />
             </button>
           )}
           
-          {/* Fullscreen Button for Mobile (always visible) */}
+          {/* Compact Fullscreen Button for Mobile */}
           <button
             onClick={toggleFullscreen}
-            className="absolute bottom-[20%] right-[5%] z-30 p-3 rounded-full bg-gradient-to-r from-[#ff4f9b80] to-[#60a5fa80] shadow-lg border border-white/20"
+            className="absolute bottom-[20%] right-[5%] z-30 p-2 rounded-full bg-black/60 backdrop-blur-sm shadow-lg border border-white/10 hover:bg-black/80 transition-all"
             aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
           >
             {isFullscreen ? (
-              <Minimize className="w-6 h-6 text-white" strokeWidth={2} />
+              <Minimize className="w-4 h-4 text-white" strokeWidth={2} />
             ) : (
-              <Maximize className="w-6 h-6 text-white" strokeWidth={2} />
+              <Maximize className="w-4 h-4 text-white" strokeWidth={2} />
             )}
           </button>
         </>
@@ -1611,49 +1611,48 @@ export default function VideoPlayer({
           </div>
         )}
 
-        {/* Compact Controls Container */}
-        <div className="bg-gradient-to-t from-black/95 via-black/80 to-transparent p-1 md:p-2 backdrop-blur-md">
-          {/* Progress Bar - Moved to top for better visibility */}
+        {/* Ultra-Compact Controls Container */}
+        <div className="bg-gradient-to-t from-black/95 via-black/70 to-transparent px-1 py-0.5 backdrop-blur-md">
+          {/* Thinner Progress Bar */}
           <div 
             ref={progressBarRef}
-            className="relative mb-1 px-0.5 touch-none group cursor-pointer"
+            className="relative mb-1 touch-none group cursor-pointer"
             onClick={handleProgressBarClick}
             onMouseMove={handleProgressDrag}
           >
             {/* Background */}
-            <div className="absolute left-0 top-0 h-0.5 md:h-1 bg-white/10 rounded-full w-full"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-white/15 rounded-full w-full"></div>
             
             {/* Buffered Progress */}
             <div 
-              className="absolute left-0 top-0 h-0.5 md:h-1 bg-white/20 rounded-full transition-all"
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-white/25 rounded-full transition-all"
               style={{ width: `${bufferedPercentage}%` }}
             ></div>
             
             {/* Actual Progress */}
-            <div className="relative w-full h-0.5 md:h-1 bg-transparent rounded-full overflow-hidden">
+            <div className="relative w-full h-1 bg-transparent rounded-full overflow-hidden">
               <div 
-                className="absolute left-0 top-0 h-full rounded-full transition-all group-hover:h-[4px]"
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 rounded-full transition-all duration-200 group-hover:h-1"
                 style={{ 
                   width: `${(currentTime / (duration || 1)) * 100}%`,
-                  background: "linear-gradient(to right, #ff4f9b, #60a5fa)" 
+                  background: "linear-gradient(90deg, #ff4f9b, #60a5fa)" 
                 }}
               ></div>
               
-              {/* Progress Thumb */}
+              {/* Progress Thumb - Smaller */}
               <div 
-                className="absolute h-2 w-2 md:h-3 md:w-3 rounded-full bg-white transform -translate-y-1/2 top-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute h-1.5 w-1.5 rounded-full bg-white transform -translate-y-1/2 top-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
                 style={{ 
-                  left: `calc(${(currentTime / (duration || 1)) * 100}% - 4px)`,
-                  boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.1)" 
+                  left: `calc(${(currentTime / (duration || 1)) * 100}% - 3px)`
                 }}
               >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff4f9b] to-[#60a5fa]"></div>
               </div>
             </div>
             
-            {/* Time Tooltip on Hover */}
+            {/* Compact Time Tooltip */}
             <div 
-              className="absolute -top-6 px-1.5 py-0.5 rounded bg-black/90 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+              className="absolute -top-5 px-1 py-0.5 rounded-sm bg-black/95 text-white text-[10px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none backdrop-blur-sm"
               style={{ 
                 left: `calc(${(currentTime / (duration || 1)) * 100}% - 15px)`,
                 transform: "translateX(-50%)"
@@ -1663,120 +1662,123 @@ export default function VideoPlayer({
             </div>
           </div>
 
-          {/* Compact Control Buttons */}
-          <div className="flex items-center justify-between text-white gap-0.5 px-0.5">
-            {/* Left Controls */}
-            <div className="flex items-center space-x-0.5">
-              {/* Play/Pause Button */}
+          {/* Ultra-Compact Control Row */}
+          <div className="flex items-center justify-between text-white text-xs">
+            {/* Left Controls Group */}
+            <div className="flex items-center gap-1">
+              {/* Primary Play Button */}
               <button 
                 onClick={togglePlay}
-                className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-0.5"
+                className="p-1 hover:bg-white/10 rounded-full transition-all duration-200 group"
                 aria-label={isPlaying ? "Tạm dừng" : "Phát"}
               >
                 {isPlaying ? (
-                  <Pause className="w-4 h-4" />
+                  <Pause className="w-3.5 h-3.5 text-white group-hover:text-[#ff4f9b]" />
                 ) : (
-                  <Play className="w-4 h-4" />
+                  <Play className="w-3.5 h-3.5 text-white group-hover:text-[#ff4f9b]" />
                 )}
               </button>
 
-              {/* Skip Buttons */}
-              <button 
-                onClick={() => skip(-10)}
-                className="focus:outline-none hover:text-[#60a5fa] transition-colors duration-200 p-0.5"
-                aria-label="Tua lại 10 giây"
-              >
-                <SkipBack className="w-3.5 h-3.5" />
-              </button>
-
-              <button 
-                onClick={() => skip(10)}
-                className="focus:outline-none hover:text-[#60a5fa] transition-colors duration-200 p-0.5"
-                aria-label="Tua đi 10 giây"
-              >
-                <SkipForward className="w-3.5 h-3.5" />
-              </button>
-
-              {/* Volume Control - Simplified */}
-              <button 
-                onClick={toggleMute}
-                className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-0.5"
-                aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
-              >
-                {isMuted || volume === 0 ? (
-                  <VolumeX className="w-3.5 h-3.5" />
-                ) : (
-                  <Volume2 className="w-3.5 h-3.5" />
-                )}
-              </button>
-
-              {/* Volume Slider - Desktop only */}
-              <div className="hidden md:flex w-12">
-                <Slider
-                  value={[isMuted ? 0 : volume]}
-                  min={0}
-                  max={100}
-                  step={1}
-                  onValueChange={handleVolumeChange}
-                  className="h-0.5"
-                />
+              {/* Skip Controls */}
+              <div className="flex items-center">
+                <button 
+                  onClick={() => skip(-10)}
+                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
+                  aria-label="Tua lại 10 giây"
+                >
+                  <SkipBack className="w-3 h-3 text-white/80 group-hover:text-[#60a5fa]" />
+                </button>
+                <button 
+                  onClick={() => skip(10)}
+                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
+                  aria-label="Tua đi 10 giây"
+                >
+                  <SkipForward className="w-3 h-3 text-white/80 group-hover:text-[#60a5fa]" />
+                </button>
               </div>
 
-              {/* Time Display - Compact */}
-              <div className="text-xs text-white/90 ml-1">
-                {formatTime(currentTime)}<span className="text-white/50">/{formatTime(duration)}</span>
+              {/* Volume Group */}
+              <div className="flex items-center gap-1">
+                <button 
+                  onClick={toggleMute}
+                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
+                  aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
+                >
+                  {isMuted || volume === 0 ? (
+                    <VolumeX className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
+                  ) : (
+                    <Volume2 className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
+                  )}
+                </button>
+
+                {/* Compact Volume Slider - Desktop only */}
+                <div className="hidden md:flex w-8">
+                  <Slider
+                    value={[isMuted ? 0 : volume]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onValueChange={handleVolumeChange}
+                    className="h-0.5 opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </div>
+              </div>
+
+              {/* Minimal Time Display */}
+              <div className="text-[10px] text-white/70 ml-0.5 font-mono">
+                {formatTime(currentTime)}<span className="text-white/40">/{formatTime(duration)}</span>
               </div>
             </div>
 
-            {/* Compact Right Controls */}
-            <div className="flex items-center space-x-1">
-              {/* Episode Controls - Visible when available */}
+            {/* Right Controls Group */}
+            <div className="flex items-center gap-0.5">
+              {/* Episode Navigation */}
               {(onPrevEpisode || onNextEpisode) && episodeInfo && (
-                <div className="flex items-center gap-0.5 rounded-full bg-black/20 px-1 py-0.5 mr-1">
-                  {onPrevEpisode && episodeInfo.index > 1 && (
+                <div className="flex items-center bg-white/5 rounded-full px-1 py-0.5">
+                  {onPrevEpisode && episodeInfo.index > 0 && (
                     <button
                       onClick={onPrevEpisode}
-                      className="p-0.5 rounded-full text-white hover:bg-white/10 transition-colors"
+                      className="p-0.5 rounded-full hover:bg-white/10 transition-all group"
                     >
-                      <ChevronLeft className="w-3 h-3" />
+                      <ChevronLeft className="w-2.5 h-2.5 text-white/80 group-hover:text-[#60a5fa]" />
                     </button>
                   )}
                   
-                  <span className="text-white/90 text-xs px-1">
-                    {episodeInfo.index}/{episodeInfo.total}
+                  <span className="text-[10px] text-white/90 px-1 font-mono">
+                    {episodeInfo.index + 1}/{episodeInfo.total}
                   </span>
                   
-                  {onNextEpisode && episodeInfo.index < episodeInfo.total && (
+                  {onNextEpisode && episodeInfo.index < episodeInfo.total - 1 && (
                     <button
                       onClick={onNextEpisode}
-                      className="p-0.5 rounded-full text-white hover:bg-white/10 transition-colors"
+                      className="p-0.5 rounded-full hover:bg-white/10 transition-all group"
                     >
-                      <ChevronLeft className="w-3 h-3 rotate-180" />
+                      <ChevronLeft className="w-2.5 h-2.5 text-white/80 group-hover:text-[#60a5fa] rotate-180" />
                     </button>
                   )}
                 </div>
               )}
 
-              {/* Server/Language Selection - Compact */}
+              {/* Server/Language Pills */}
               {((serverOptions.length > 0 && onServerChange) || (languageOptions.length > 0 && onLanguageChange)) && (
-                <div className="flex items-center gap-1 text-xs">
+                <div className="flex items-center gap-0.5">
                   {serverOptions.length > 0 && onServerChange && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="px-1.5 py-0.5 bg-gradient-to-r from-[#ff4f9b] to-[#60a5fa] text-white text-xs rounded hover:opacity-90 transition-all duration-300">
+                        <button className="px-1 py-0.5 bg-gradient-to-r from-[#ff4f9b]/80 to-[#60a5fa]/80 text-white text-[9px] rounded-sm hover:opacity-90 transition-all font-medium min-w-[16px]">
                           S{currentServerIndex + 1}
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent 
                         side="top" 
                         align="end" 
-                        className="w-32 bg-black/90 border-white/10 backdrop-blur-md text-white max-h-40 overflow-y-auto"
+                        className="w-28 bg-black/95 border-white/10 backdrop-blur-md text-white"
                       >
                         {serverOptions.map((server, index) => (
                           <DropdownMenuItem
                             key={index}
                             onClick={() => onServerChange(server.index)}
-                            className={`text-xs cursor-pointer hover:bg-white/10 ${
+                            className={`text-[10px] cursor-pointer hover:bg-white/10 px-2 py-1 ${
                               currentServerIndex === server.index ? 'bg-white/20 text-[#ff4f9b]' : ''
                             }`}
                           >
@@ -1790,20 +1792,20 @@ export default function VideoPlayer({
                   {languageOptions.length > 0 && onLanguageChange && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="px-1.5 py-0.5 bg-gradient-to-r from-[#ff4f9b] to-[#60a5fa] text-white text-xs rounded hover:opacity-90 transition-all duration-300">
+                        <button className="px-1 py-0.5 bg-gradient-to-r from-[#ff4f9b]/80 to-[#60a5fa]/80 text-white text-[9px] rounded-sm hover:opacity-90 transition-all font-medium min-w-[16px]">
                           {languageOptions[currentLanguageIndex]?.name?.slice(0, 2) || 'VN'}
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent 
                         side="top" 
                         align="end" 
-                        className="w-32 bg-black/90 border-white/10 backdrop-blur-md text-white max-h-40 overflow-y-auto"
+                        className="w-24 bg-black/95 border-white/10 backdrop-blur-md text-white"
                       >
                         {languageOptions.map((lang, index) => (
                           <DropdownMenuItem
                             key={index}
                             onClick={() => onLanguageChange(lang.index)}
-                            className={`text-xs cursor-pointer hover:bg-white/10 ${
+                            className={`text-[10px] cursor-pointer hover:bg-white/10 px-2 py-1 ${
                               currentLanguageIndex === lang.index ? 'bg-white/20 text-[#ff4f9b]' : ''
                             }`}
                           >
@@ -1816,43 +1818,43 @@ export default function VideoPlayer({
                 </div>
               )}
 
-              {/* Playback Speed - Compact */}
+              {/* Speed Control */}
               <button 
                 onClick={() => {
                   const currentIndex = playbackSpeeds.indexOf(playbackSpeed);
                   const nextIndex = (currentIndex + 1) % playbackSpeeds.length;
                   changePlaybackSpeed(playbackSpeeds[nextIndex]);
                 }}
-                className={`text-xs px-1 py-0.5 rounded hover:bg-white/10 transition-colors duration-200 ${
-                  playbackSpeed !== 1 ? 'text-[#ff4f9b]' : 'text-white/80'
+                className={`text-[9px] px-1 py-0.5 rounded-sm hover:bg-white/10 transition-all font-mono ${
+                  playbackSpeed !== 1 ? 'text-[#ff4f9b]' : 'text-white/70'
                 }`}
               >
                 {playbackSpeed}x
               </button>
 
-              {/* Fullscreen Button */}
+              {/* Fullscreen */}
               <button 
                 onClick={toggleFullscreen}
-                className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-0.5"
+                className="p-0.5 hover:bg-white/10 rounded transition-all duration-200 group"
                 aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
               >
                 {isFullscreen ? (
-                  <Minimize className="w-4 h-4" />
+                  <Minimize className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
                 ) : (
-                  <Maximize className="w-4 h-4" />
+                  <Maximize className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
                 )}
               </button>
 
-              {/* Settings Menu - Compact */}
+              {/* Minimal Settings */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-0.5">
-                    <Settings className="w-4 h-4" />
+                  <button className="p-0.5 hover:bg-white/10 rounded transition-all duration-200 group">
+                    <Settings className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="w-40 p-2 bg-black/90 backdrop-blur-md border-white/10 text-white"
+                  className="w-32 p-1 bg-black/95 backdrop-blur-md border-white/10 text-white"
                 >
                   {/* Quality Selection for Mobile */}
                   {quality.length > 0 && (
