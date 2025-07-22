@@ -814,9 +814,9 @@ export default function WatchPage() {
           </div>
         </div>
 
-        {/* Comments Section - Prominent position */}
+        {/* Player Controls and Episode Manager Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             {/* Player Controls - Compact */}
             <div className="bg-black/80 rounded-lg border border-white/10 p-3 mb-4">
               <PlayerControls
@@ -841,7 +841,7 @@ export default function WatchPage() {
             </div>
             
             {/* Episode Manager */}
-            <div className="bg-black/80 rounded-lg border border-white/10 p-3">
+            <div className="bg-black/80 rounded-lg border border-white/10 p-3 mb-6">
               <h2 className="text-base font-bold text-white mb-2 flex items-center">
                 <Film className="w-4 h-4 mr-2 text-primary" />
                 Chọn tập
@@ -855,82 +855,41 @@ export default function WatchPage() {
               />
             </div>
           </div>
-          
-          {/* Comments - Highly visible sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-purple-900/20 rounded-lg border-2 border-purple-500/30 overflow-hidden">
-              <div className="bg-purple-600/20 p-3 border-b border-purple-500/30">
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5 text-purple-400" />
-                  <h2 className="text-base font-bold text-white">Bình luận phim</h2>
-                </div>
-              </div>
-              
-              <div className="p-3">
-                {!isAuthenticated && (
-                  <div className="mb-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/20 text-center">
-                    <MessageCircle className="h-6 w-6 text-purple-400 mx-auto mb-2" />
-                    <p className="text-xs text-slate-300 mb-2">Đăng nhập để bình luận</p>
-                    <Button 
-                      size="sm"
-                      className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1"
-                      onClick={() => navigate("/auth")}
-                    >
-                      Đăng nhập
-                    </Button>
-                  </div>
-                )}
-                
-                <div className="max-h-[350px] overflow-y-auto">
-                  <CommentList movieSlug={slug || ""} />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Movie Info - Simplified */}
-        <div className="bg-black/80 rounded-lg border border-white/10 p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Info className="w-4 h-4 text-primary" />
-            <h3 className="text-base font-bold text-white">Thông tin phim</h3>
+        {/* Comments Section - Full width like movie details page */}
+        <div className="bg-black/80 rounded-lg border border-white/10 p-4 md:p-6">
+          {/* Comments Header */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2.5 rounded-full bg-gradient-to-br from-primary/30 to-secondary/20 backdrop-blur-sm border border-white/10">
+              <MessageCircle className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+              Bình luận phim
+            </h3>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-primary/50 via-white/10 to-transparent"></div>
           </div>
+
+          {/* Authentication Notice for Non-logged in Users */}
+          {!isAuthenticated && (
+            <div className="mb-4">
+              <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 text-center">
+                <h3 className="text-lg font-bold text-primary mb-1">Đăng nhập để bình luận</h3>
+                <p className="text-sm text-white/70 mb-2">Vui lòng đăng nhập để có thể bình luận phim này.</p>
+                <Button 
+                  variant="default" 
+                  className="bg-primary hover:bg-primary/90 text-white rounded"
+                  onClick={() => navigate("/auth")}
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Đăng nhập ngay
+                </Button>
+              </div>
+            </div>
+          )}
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <div 
-                className="text-white/80 text-sm leading-relaxed mb-3" 
-                dangerouslySetInnerHTML={{ __html: movie.content || "Chưa có nội dung mô tả." }}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="bg-black/40 p-2 rounded">
-                <span className="text-white/60 block">Năm:</span>
-                <span className="text-white">{movie.year || 'N/A'}</span>
-              </div>
-              {movie.time && (
-                <div className="bg-black/40 p-2 rounded">
-                  <span className="text-white/60 block">Thời lượng:</span>
-                  <span className="text-white">{movie.time}</span>
-                </div>
-              )}
-              <div className="bg-black/40 p-2 rounded">
-                <span className="text-white/60 block">Trạng thái:</span>
-                <span className="text-white">
-                  {movie.status === 'ongoing' ? 'Đang chiếu' : 
-                  movie.status === 'completed' ? 'Hoàn thành' : 
-                  movie.status}
-                </span>
-              </div>
-              {movie.tmdb?.vote_average > 0 && (
-                <div className="bg-black/40 p-2 rounded">
-                  <span className="text-white/60 block">Đánh giá:</span>
-                  <span className="text-yellow-400">{movie.tmdb.vote_average}/10</span>
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Comments List */}
+          <CommentList movieSlug={slug || ""} />
         </div>
       </div>
     </div>
