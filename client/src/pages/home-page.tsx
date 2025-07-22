@@ -159,15 +159,17 @@ export default function HomePage() {
         className="group cursor-pointer"
       >
         <Link href={`/movie/${movieSlug}`}>
-          <Card className="bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-md border border-slate-700/50 hover:border-indigo-500/50 transition-all duration-500 overflow-hidden group-hover:shadow-2xl group-hover:shadow-indigo-500/20 relative h-full flex flex-col">
-            {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <Card className="movie-card-premium group h-full flex flex-col relative overflow-hidden transform-gpu">
+            {/* Enhanced Multi-layer Glow Effects */}
+            <div className="movie-card-overlay" />
+            <div className="absolute -inset-2 bg-gradient-to-br from-indigo-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700 -z-10" />
+            <div className="absolute -inset-1 bg-gradient-to-br from-indigo-400/30 via-purple-400/25 to-pink-400/30 rounded-2xl blur-md opacity-0 group-hover:opacity-80 transition-all duration-500 -z-10" />
             
-            <div className="relative aspect-[2/3] overflow-hidden">
+            <div className="relative aspect-[2/3] overflow-hidden rounded-t-[20px]">
               <img
                 src={moviePoster || '/placeholder-movie.jpg'}
                 alt={movieName}
-                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                className="movie-card-image w-full h-full object-cover"
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
@@ -208,76 +210,110 @@ export default function HomePage() {
               {/* Enhanced gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
               
-              {/* Rating badge */}
+              {/* Premium Rating Badge */}
               {movie.tmdb?.vote_average > 0 && (
                 <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  initial={{ scale: 0, opacity: 0, y: -10 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, type: "spring", stiffness: 300 }}
+                  className="absolute top-3 left-3 z-20"
                 >
-                  <Badge className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-semibold shadow-lg">
-                    <Star className="w-3 h-3 mr-1 fill-current" />
-                    {movie.tmdb.vote_average}
+                  <Badge className="premium-badge text-black text-xs font-bold px-2.5 py-1.5 rounded-full">
+                    <Star className="w-3 h-3 mr-1.5 fill-current" />
+                    {movie.tmdb.vote_average.toFixed(1)}
                   </Badge>
                 </motion.div>
               )}
 
-              {/* Quality badge */}
+              {/* Enhanced Quality Badge */}
               {movieQuality && (
                 <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: index * 0.1 + 0.1 }}
+                  initial={{ scale: 0, opacity: 0, y: -10 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 + 0.1, type: "spring", stiffness: 300 }}
+                  className="absolute top-3 right-3 z-20"
                 >
-                  <Badge className="absolute top-3 right-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-semibold shadow-lg">
-                    {movieQuality}
+                  <Badge className="quality-badge text-white text-xs font-bold px-2.5 py-1.5 rounded-full">
+                    <span className="text-shadow">{movieQuality}</span>
                   </Badge>
                 </motion.div>
               )}
 
-              {/* Progress badge for watch history */}
+              {/* Cinematic Progress Badge */}
               {movie.progress && movie.progress > 0 && (
                 <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: index * 0.1 + 0.2 }}
+                  initial={{ scale: 0, opacity: 0, x: -10 }}
+                  animate={{ scale: 1, opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 + 0.2, type: "spring", stiffness: 300 }}
+                  className="absolute bottom-3 left-3 z-20"
                 >
-                  <Badge className="absolute bottom-3 left-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-semibold shadow-lg">
-                    <Clock className="w-3 h-3 mr-1" />
+                  <Badge className="bg-gradient-to-r from-cyan-500/90 to-blue-500/90 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1.5 rounded-full border border-cyan-400/30">
+                    <Clock className="w-3 h-3 mr-1.5" />
                     {Math.round(movie.progress * 100)}%
                   </Badge>
+                  {/* Progress Bar */}
+                  <div className="absolute -bottom-0.5 left-0 right-0 h-1 bg-black/30 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-1000"
+                      style={{ width: `${movie.progress * 100}%` }}
+                    />
+                  </div>
                 </motion.div>
               )}
 
-              {/* Enhanced play button overlay */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+              {/* Ultra Premium Play Button */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-600 z-30">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-20 h-20 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 backdrop-blur-sm flex items-center justify-center shadow-2xl shadow-indigo-500/50 relative overflow-hidden"
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="relative"
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full" />
-                  <Play className="w-8 h-8 text-white ml-1 drop-shadow-lg" />
+                  {/* Outer Glow Ring */}
+                  <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-pink-500/30 blur-lg animate-pulse" />
+                  
+                  {/* Main Play Button */}
+                  <div className="relative w-16 h-16 rounded-full flex items-center justify-center overflow-hidden"
+                       style={{
+                         background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(168, 85, 247, 0.95))',
+                         boxShadow: `
+                           0 0 40px rgba(102, 126, 234, 0.6),
+                           0 8px 25px rgba(0, 0, 0, 0.4),
+                           inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                           inset 0 -1px 0 rgba(0, 0, 0, 0.2)
+                         `
+                       }}>
+                    {/* Inner Shine Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-white/10 to-transparent rounded-full" />
+                    
+                    {/* Play Icon */}
+                    <Play className="w-7 h-7 text-white ml-1 drop-shadow-lg relative z-10" />
+                  </div>
+                  
+                  {/* Ripple Effect */}
+                  <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping" />
                 </motion.div>
               </div>
 
-              {/* Trending indicator for trending movies */}
+              {/* Premium Trending Indicator */}
               {movie.view_count > 1000 && (
                 <motion.div
                   animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, -5, 0]
+                    scale: [1, 1.05, 1],
+                    rotate: [0, 2, -2, 0],
+                    y: [0, -2, 0]
                   }}
                   transition={{ 
-                    duration: 2,
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="absolute top-3 left-1/2 -translate-x-1/2"
+                  className="absolute top-12 left-1/2 -translate-x-1/2 z-20"
                 >
-                  <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold shadow-lg">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    HOT
+                  <Badge className="trending-badge text-white text-xs font-bold px-3 py-1.5 rounded-full relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <TrendingUp className="w-3 h-3 mr-1.5 relative z-10" />
+                    <span className="relative z-10">TRENDING</span>
                   </Badge>
                 </motion.div>
               )}
@@ -301,22 +337,34 @@ export default function HomePage() {
               )}
             </div>
             
-            <CardContent className="p-4 relative flex-1 flex flex-col justify-between min-h-[90px]">
-              <h3 className="font-bold text-sm line-clamp-2 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-400 group-hover:to-purple-400 group-hover:bg-clip-text transition-all duration-300 min-h-[2.5rem] flex items-start">
+            <CardContent className="movie-card-content p-5 relative flex-1 flex flex-col justify-between min-h-[110px]">
+              {/* Movie Title with Premium Typography */}
+              <h3 className="font-bold text-sm line-clamp-2 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-300 group-hover:via-purple-300 group-hover:to-pink-300 group-hover:bg-clip-text transition-all duration-500 min-h-[2.5rem] flex items-start mb-3 text-shadow-sm">
                 {movieName}
               </h3>
-              <div className="flex items-center justify-between mt-auto">
-                <p className="text-xs text-slate-400 font-medium line-clamp-1">
-                  {movieYear} • {movieType === 'series' ? 'Phim bộ' : 'Phim lẻ'}
-                  {movie.episodeIndex !== undefined && (
-                    <span> • Tập {movie.episodeIndex + 1}</span>
-                  )}
-                </p>
+              
+              {/* Enhanced Movie Metadata */}
+              <div className="flex items-center justify-between mt-auto space-y-2">
+                <div className="flex flex-col gap-1">
+                  <p className="text-xs text-slate-300/90 font-medium line-clamp-1 bg-black/20 px-2 py-1 rounded-md backdrop-blur-sm border border-white/10">
+                    {movieYear} • {movieType === 'series' ? 'Phim bộ' : 'Phim lẻ'}
+                    {movie.episodeIndex !== undefined && (
+                      <span> • Tập {movie.episodeIndex + 1}</span>
+                    )}
+                  </p>
+                </div>
+                
+                {/* Enhanced View Count with Icon */}
                 {movie.view_count && (
-                  <div className="flex items-center gap-1 text-xs text-slate-500 flex-shrink-0">
-                    <Eye className="w-3 h-3" />
-                    <span>{movie.view_count > 1000 ? `${(movie.view_count / 1000).toFixed(1)}K` : movie.view_count}</span>
-                  </div>
+                  <motion.div 
+                    className="flex items-center gap-1.5 text-xs text-slate-300 flex-shrink-0 bg-black/30 px-2.5 py-1.5 rounded-full backdrop-blur-sm border border-white/10"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Eye className="w-3 h-3 text-indigo-400" />
+                    <span className="font-medium">
+                      {movie.view_count > 1000 ? `${(movie.view_count / 1000).toFixed(1)}K` : movie.view_count}
+                    </span>
+                  </motion.div>
                 )}
               </div>
             </CardContent>
@@ -488,23 +536,23 @@ export default function HomePage() {
         <div className="relative group">
           {/* Navigation Buttons - Only visible on desktop */}
           <motion.button
-            className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 transition-all duration-300 ${!canScrollLeft ? 'opacity-50 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100'}`}
+            className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-14 h-14 rounded-full glass-card hover:bg-white/10 transition-all duration-300 shadow-lg ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100 hover:shadow-indigo-500/25'}`}
             onClick={scrollLeft}
             disabled={!canScrollLeft}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: '0 0 25px rgba(102, 126, 234, 0.4)' }}
             whileTap={{ scale: 0.95 }}
           >
-            <ChevronLeft className="w-6 h-6 text-white" />
+            <ChevronLeft className="w-6 h-6 text-white drop-shadow-lg" />
           </motion.button>
 
           <motion.button
-            className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 transition-all duration-300 ${!canScrollRight ? 'opacity-50 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100'}`}
+            className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-14 h-14 rounded-full glass-card hover:bg-white/10 transition-all duration-300 shadow-lg ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100 hover:shadow-indigo-500/25'}`}
             onClick={scrollRight}
             disabled={!canScrollRight}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: '0 0 25px rgba(102, 126, 234, 0.4)' }}
             whileTap={{ scale: 0.95 }}
           >
-            <ChevronRight className="w-6 h-6 text-white" />
+            <ChevronRight className="w-6 h-6 text-white drop-shadow-lg" />
           </motion.button>
 
           {/* Movie Scroll Container */}
@@ -584,7 +632,7 @@ export default function HomePage() {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-indigo-400 hover:text-white hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/30 hover:border-indigo-400/50 backdrop-blur-sm transition-all duration-300 group"
+              className="btn-primary-glow text-white hover:text-white border-0 font-cinematic font-semibold transition-all duration-300 group"
             >
               Xem tất cả
               <motion.div
