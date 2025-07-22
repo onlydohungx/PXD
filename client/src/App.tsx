@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { IdleModeProvider } from '@/components/IdleModeProvider';
 import { OfflineIndicator } from '@/components/offline-indicator';
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt';
+import { FloatingParticles } from '@/components/FloatingParticles';
 import { useResourcePreloader } from '@/hooks/use-resource-preloader';
 
 // Import các trang một cách thông thường
@@ -91,10 +92,11 @@ function App() {
           idleTimeout={300000}
           enableScreensaver={true}
         >
-          <div className="flex flex-col min-h-screen bg-background">
+          <div className="flex flex-col min-h-screen bg-background relative">
+            <FloatingParticles />
             <OfflineIndicator />
             <Navbar />
-            <main className="flex-grow pt-20 lg:pt-24">
+            <main className="flex-grow pt-20 lg:pt-24 relative z-10">
               <MainRouter />
             </main>
             <Footer />
