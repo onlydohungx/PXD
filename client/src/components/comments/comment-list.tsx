@@ -620,22 +620,22 @@ export function CommentList({ movieSlug }: CommentListProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-5">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-primary/10 rounded-full">
-            <MessageCircle className="h-6 w-6 text-primary" />
+          <div className="p-2 bg-primary/10 rounded-full">
+            <MessageCircle className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Bình luận</h2>
-            <p className="text-muted-foreground mt-1">
+            <h2 className="text-2xl font-bold tracking-tight">Bình luận</h2>
+            <p className="text-muted-foreground text-sm">
               {comments.length === 0 ? 'Chưa có bình luận nào' : `${comments.length} bình luận`}
             </p>
           </div>
         </div>
         {comments.length > 0 && (
-          <Badge variant="secondary" className="px-3 py-1">
+          <Badge variant="secondary" className="px-2 py-1 text-xs">
             {mainComments.length} bình luận gốc
           </Badge>
         )}
@@ -643,51 +643,51 @@ export function CommentList({ movieSlug }: CommentListProps) {
 
       {/* Add Comment Form */}
       {isAuthenticated ? (
-        <Card className="border-2 border-dashed border-primary/20 hover:border-primary/40 transition-colors duration-300">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-primary/10 text-primary font-medium">
+        <Card className="border-dashed border-primary/20 hover:border-primary/40 transition-colors duration-300">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary/10 text-primary font-medium text-sm">
                   {user?.username?.substring(0, 2).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-lg">Chia sẻ ý kiến của bạn</CardTitle>
-                <p className="text-sm text-muted-foreground">Bạn nghĩ gì về bộ phim này?</p>
+                <CardTitle className="text-base">Chia sẻ ý kiến của bạn</CardTitle>
+                <p className="text-xs text-muted-foreground">Bạn nghĩ gì về bộ phim này?</p>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {renderRatingSelector()}
             <div className="relative">
               <Textarea
-                placeholder="Viết bình luận của bạn về bộ phim này... Hãy chia sẻ cảm nhận chân thật nhất!"
+                placeholder="Viết bình luận của bạn về bộ phim này..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="min-h-[120px] resize-none border-2 focus:border-primary/50 transition-colors"
+                className="min-h-[80px] resize-none focus:border-primary/50 transition-colors"
               />
-              <div className="absolute bottom-3 right-3 text-xs text-muted-foreground">
+              <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
                 {newComment.length}/1000
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground">
+          <CardFooter className="flex justify-between items-center pt-3">
+            <p className="text-xs text-muted-foreground">
               Đăng nhập với tư cách <span className="font-medium text-primary">{user?.username}</span>
             </p>
             <Button 
               onClick={handleAddComment}
               disabled={addCommentMutation.isPending || !newComment.trim()}
-              className="px-6"
+              size="sm"
             >
               {addCommentMutation.isPending ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                   Đang gửi...
                 </>
               ) : (
                 <>
-                  <MessageCircle className="w-4 h-4 mr-2" />
+                  <MessageCircle className="w-3 h-3 mr-2" />
                   Gửi bình luận
                 </>
               )}
@@ -713,48 +713,48 @@ export function CommentList({ movieSlug }: CommentListProps) {
         </Card>
       )}
 
-      <Separator className="my-8" />
+      <Separator className="my-5" />
 
       {/* Comments List */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {mainComments.length === 0 ? (
-          <div className="text-center py-16 space-y-4">
-            <div className="p-6 bg-muted/20 rounded-full w-fit mx-auto">
-              <MessageCircle className="h-12 w-12 text-muted-foreground/50" />
+          <div className="text-center py-12 space-y-3">
+            <div className="p-4 bg-muted/20 rounded-full w-fit mx-auto">
+              <MessageCircle className="h-8 w-8 text-muted-foreground/50" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-muted-foreground">Chưa có bình luận nào</h3>
-              <p className="text-muted-foreground mt-2">
+              <h3 className="text-lg font-semibold text-muted-foreground">Chưa có bình luận nào</h3>
+              <p className="text-muted-foreground text-sm mt-1">
                 Hãy là người đầu tiên chia sẻ ý kiến về bộ phim này!
               </p>
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {mainComments.map((comment: any) => (
               <div key={comment.id} className="group">
                 {/* Main Comment */}
-                <Card className="border-l-4 border-l-primary/20 hover:border-l-primary/60 transition-all duration-300 hover:shadow-lg">
-                  <CardHeader className="pb-4">
+                <Card className="border-l-2 border-l-primary/20 hover:border-l-primary/50 transition-all duration-200 hover:shadow-md">
+                  <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-12 w-12 border-2 border-primary/20">
-                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-medium">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="h-9 w-9">
+                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-medium text-sm">
                             {comment.username?.substring(0, 2).toUpperCase() || 'U'}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-1">
-                            <h4 className="font-semibold text-lg">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-medium text-base">
                               {comment.username || "Người dùng ẩn danh"}
                             </h4>
                             {comment.rating && (
-                              <Badge variant="outline" className="px-2 py-1">
+                              <Badge variant="outline" className="px-2 py-0.5 text-xs">
                                 {comment.rating}/10 ⭐
                               </Badge>
                             )}
                           </div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs text-muted-foreground">
                             {formatDate(comment.createdAt)}
                             {comment.updatedAt !== comment.createdAt && " • Đã chỉnh sửa"}
                           </p>
@@ -763,22 +763,22 @@ export function CommentList({ movieSlug }: CommentListProps) {
                       {canModifyComment(comment.userId) && (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                              <MoreVertical className="h-4 w-4" />
+                            <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity h-7 w-7 p-0">
+                              <MoreVertical className="h-3 w-3" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuContent align="end" className="w-44">
                             <DropdownMenuItem onClick={() => setEditingComment({
                               id: comment.id,
                               content: comment.content
                             })}>
-                              <Edit className="mr-2 h-4 w-4" />
+                              <Edit className="mr-2 h-3 w-3" />
                               Chỉnh sửa
                             </DropdownMenuItem>
                             <Dialog>
                               <DialogTrigger asChild>
                                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                  <Trash2 className="mr-2 h-4 w-4" />
+                                  <Trash2 className="mr-2 h-3 w-3" />
                                   Xóa bình luận
                                 </DropdownMenuItem>
                               </DialogTrigger>
@@ -789,10 +789,11 @@ export function CommentList({ movieSlug }: CommentListProps) {
                                 <p>Bạn có chắc chắn muốn xóa bình luận này không? Hành động này không thể hoàn tác.</p>
                                 <DialogFooter>
                                   <DialogClose asChild>
-                                    <Button variant="outline">Hủy bỏ</Button>
+                                    <Button variant="outline" size="sm">Hủy bỏ</Button>
                                   </DialogClose>
                                   <Button 
                                     variant="destructive" 
+                                    size="sm"
                                     onClick={() => handleDeleteComment(comment.id)}
                                     disabled={isDeleting}
                                   >
@@ -806,23 +807,23 @@ export function CommentList({ movieSlug }: CommentListProps) {
                       )}
                     </div>
                   </CardHeader>
-                  <CardContent className="pb-4">
+                  <CardContent className="pb-2">
                     {comment.rating && (
-                      <div className="flex items-center gap-1 mb-3">
+                      <div className="flex items-center gap-1 mb-2">
                         {Array.from({ length: comment.rating }).map((_, i) => (
-                          <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
+                          <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />
                         ))}
                         {Array.from({ length: 10 - comment.rating }).map((_, i) => (
-                          <Star key={i + comment.rating} size={16} className="text-gray-300" />
+                          <Star key={i + comment.rating} size={14} className="text-gray-300" />
                         ))}
                       </div>
                     )}
-                    <p className="text-base leading-relaxed text-foreground">
+                    <p className="text-sm leading-relaxed text-foreground">
                       {comment.content}
                     </p>
                   </CardContent>
-                  <CardFooter className="flex justify-between items-center pt-0">
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <CardFooter className="flex justify-between items-center pt-2 pb-3">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       {getReplies(comment.id).length > 0 && (
                         <span className="flex items-center gap-1">
                           <Reply className="h-3 w-3" />
@@ -835,9 +836,9 @@ export function CommentList({ movieSlug }: CommentListProps) {
                         variant="ghost" 
                         size="sm"
                         onClick={() => setReplyingTo(comment.id)}
-                        className="text-primary hover:text-primary hover:bg-primary/10"
+                        className="text-primary hover:text-primary hover:bg-primary/10 h-7 text-xs"
                       >
-                        <Reply className="mr-2 h-4 w-4" />
+                        <Reply className="mr-1 h-3 w-3" />
                         Trả lời
                       </Button>
                     )}
@@ -846,30 +847,30 @@ export function CommentList({ movieSlug }: CommentListProps) {
 
                 {/* Reply Form */}
                 {replyingTo === comment.id && (
-                  <div className="ml-8 mt-4 animate-in slide-in-from-left-5 duration-300">
+                  <div className="ml-6 mt-3 animate-in slide-in-from-left-5 duration-300">
                     <Card className="border-dashed border-primary/30">
-                      <CardHeader className="pb-3">
+                      <CardHeader className="pb-2">
                         <div className="flex items-center gap-2">
-                          <Avatar className="h-8 w-8">
-                            <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="bg-primary/10 text-primary text-xs">
                               {user?.username?.substring(0, 2).toUpperCase() || 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <p className="text-sm font-medium">
+                          <p className="text-xs font-medium">
                             Trả lời bình luận của <span className="text-primary">{comment.username || "người dùng"}</span>
                           </p>
                         </div>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="py-2">
                         <Textarea
                           placeholder="Viết trả lời của bạn..."
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
-                          className="min-h-[80px] resize-none"
+                          className="min-h-[60px] resize-none text-sm"
                           autoFocus
                         />
                       </CardContent>
-                      <CardFooter className="flex justify-end gap-2">
+                      <CardFooter className="flex justify-end gap-2 pt-2">
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -894,8 +895,8 @@ export function CommentList({ movieSlug }: CommentListProps) {
 
                 {/* Replies */}
                 {getReplies(comment.id).length > 0 && (
-                  <div className="ml-8 mt-4 space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                  <div className="ml-6 mt-3 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                       <div className="h-px bg-border flex-1"></div>
                       <span className="px-2 bg-background">
                         {getReplies(comment.id).length} trả lời
@@ -903,17 +904,17 @@ export function CommentList({ movieSlug }: CommentListProps) {
                       <div className="h-px bg-border flex-1"></div>
                     </div>
                     {getReplies(comment.id).map((reply: any) => (
-                      <Card key={reply.id} className="bg-muted/30 border-l-2 border-l-muted-foreground/30">
-                        <CardHeader className="pb-3">
+                      <Card key={reply.id} className="bg-muted/30 border-l border-l-muted-foreground/30">
+                        <CardHeader className="pb-2">
                           <div className="flex justify-between items-start">
-                            <div className="flex items-center gap-3">
-                              <Avatar className="h-9 w-9">
-                                <AvatarFallback className="bg-muted text-muted-foreground text-sm">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-7 w-7">
+                                <AvatarFallback className="bg-muted text-muted-foreground text-xs">
                                   {reply.username?.substring(0, 2).toUpperCase() || 'U'}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
-                                <h5 className="font-medium">
+                                <h5 className="font-medium text-sm">
                                   {reply.username || "Người dùng ẩn danh"}
                                 </h5>
                                 <p className="text-xs text-muted-foreground">
@@ -925,7 +926,7 @@ export function CommentList({ movieSlug }: CommentListProps) {
                             {canModifyComment(reply.userId) && (
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
                                     <MoreVertical className="h-3 w-3" />
                                   </Button>
                                 </DropdownMenuTrigger>
@@ -934,13 +935,13 @@ export function CommentList({ movieSlug }: CommentListProps) {
                                     id: reply.id,
                                     content: reply.content
                                   })}>
-                                    <Edit className="mr-2 h-4 w-4" />
+                                    <Edit className="mr-2 h-3 w-3" />
                                     Chỉnh sửa
                                   </DropdownMenuItem>
                                   <Dialog>
                                     <DialogTrigger asChild>
                                       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        <Trash2 className="mr-2 h-3 w-3" />
                                         Xóa
                                       </DropdownMenuItem>
                                     </DialogTrigger>
@@ -951,10 +952,11 @@ export function CommentList({ movieSlug }: CommentListProps) {
                                       <p>Bạn có chắc chắn muốn xóa trả lời này không?</p>
                                       <DialogFooter>
                                         <DialogClose asChild>
-                                          <Button variant="outline">Hủy</Button>
+                                          <Button variant="outline" size="sm">Hủy</Button>
                                         </DialogClose>
                                         <Button 
                                           variant="destructive" 
+                                          size="sm"
                                           onClick={() => handleDeleteComment(reply.id)}
                                           disabled={deleteCommentMutation.isPending}
                                         >
@@ -968,8 +970,8 @@ export function CommentList({ movieSlug }: CommentListProps) {
                             )}
                           </div>
                         </CardHeader>
-                        <CardContent className="pt-0">
-                          <p className="text-sm leading-relaxed">
+                        <CardContent className="pt-0 pb-3">
+                          <p className="text-xs leading-relaxed">
                             {reply.content}
                           </p>
                         </CardContent>
