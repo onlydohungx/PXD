@@ -1203,27 +1203,29 @@ export default function VideoPlayer({
       {/* Mobile Controls - Nút chế độ chiếu rạp ẩn khi toàn màn hình */}
       {isMobile && (
         <>
-          {/* Compact Theater Mode Button - Hidden when fullscreen */}
+          {/* Glass Theater Mode Button - Hidden when fullscreen */}
           {!isFullscreen && (
             <button
               onClick={toggleTheaterMode}
-              className="absolute bottom-[20%] right-[20%] z-30 p-2 rounded-full bg-black/60 backdrop-blur-sm shadow-lg border border-white/10 hover:bg-black/80 transition-all"
+              className="absolute bottom-[20%] right-[20%] z-30 p-3 rounded-2xl backdrop-blur-xl bg-white/[0.08] border border-white/[0.15] shadow-2xl hover:bg-white/[0.12] transition-all group"
               aria-label={isTheaterMode ? "Thoát chế độ chiếu rạp" : "Chế độ chiếu rạp"}
             >
-              <Lightbulb className="w-4 h-4 text-white" strokeWidth={2} />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+              <Lightbulb className="w-5 h-5 text-white relative z-10 group-hover:text-yellow-400 transition-colors" strokeWidth={2} />
             </button>
           )}
           
-          {/* Compact Fullscreen Button for Mobile */}
+          {/* Glass Fullscreen Button for Mobile */}
           <button
             onClick={toggleFullscreen}
-            className="absolute bottom-[20%] right-[5%] z-30 p-2 rounded-full bg-black/60 backdrop-blur-sm shadow-lg border border-white/10 hover:bg-black/80 transition-all"
+            className="absolute bottom-[20%] right-[5%] z-30 p-3 rounded-2xl backdrop-blur-xl bg-white/[0.08] border border-white/[0.15] shadow-2xl hover:bg-white/[0.12] transition-all group"
             aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
           >
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
             {isFullscreen ? (
-              <Minimize className="w-4 h-4 text-white" strokeWidth={2} />
+              <Minimize className="w-5 h-5 text-white relative z-10 group-hover:text-orange-400 transition-colors" strokeWidth={2} />
             ) : (
-              <Maximize className="w-4 h-4 text-white" strokeWidth={2} />
+              <Maximize className="w-5 h-5 text-white relative z-10 group-hover:text-blue-400 transition-colors" strokeWidth={2} />
             )}
           </button>
         </>
@@ -1611,251 +1613,275 @@ export default function VideoPlayer({
           </div>
         )}
 
-        {/* Ultra-Compact Controls Container */}
-        <div className="bg-gradient-to-t from-black/95 via-black/70 to-transparent px-1 py-0.5 backdrop-blur-md">
-          {/* Thinner Progress Bar */}
-          <div 
-            ref={progressBarRef}
-            className="relative mb-1 touch-none group cursor-pointer"
-            onClick={handleProgressBarClick}
-            onMouseMove={handleProgressDrag}
-          >
-            {/* Background */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-white/15 rounded-full w-full"></div>
-            
-            {/* Buffered Progress */}
+        {/* Liquid Glass Controls Container */}
+        <div className="relative">
+          {/* Frosted Glass Background */}
+          <div className="absolute inset-0 bg-gradient-to-t from-white/[0.08] via-white/[0.04] to-transparent backdrop-blur-xl rounded-t-3xl border-t border-white/[0.15] shadow-2xl shadow-black/40"></div>
+          
+          {/* Glass Reflection Effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-transparent rounded-t-3xl"></div>
+          
+          {/* Content */}
+          <div className="relative px-4 py-3">
+            {/* Elegant Progress Bar */}
             <div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-white/25 rounded-full transition-all"
-              style={{ width: `${bufferedPercentage}%` }}
-            ></div>
-            
-            {/* Actual Progress */}
-            <div className="relative w-full h-1 bg-transparent rounded-full overflow-hidden">
+              ref={progressBarRef}
+              className="relative mb-3 touch-none group cursor-pointer"
+              onClick={handleProgressBarClick}
+              onMouseMove={handleProgressDrag}
+            >
+              {/* Track Background with Glass Effect */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-white/10 rounded-full w-full backdrop-blur-sm border border-white/[0.08] shadow-inner"></div>
+              
+              {/* Buffered Progress with Subtle Glow */}
               <div 
-                className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 rounded-full transition-all duration-200 group-hover:h-1"
-                style={{ 
-                  width: `${(currentTime / (duration || 1)) * 100}%`,
-                  background: "linear-gradient(90deg, #ff4f9b, #60a5fa)" 
-                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-white/20 rounded-full transition-all duration-300 shadow-sm"
+                style={{ width: `${bufferedPercentage}%` }}
               ></div>
               
-              {/* Progress Thumb - Smaller */}
+              {/* Active Progress with Liquid Effect */}
+              <div className="relative w-full h-2 bg-transparent rounded-full overflow-hidden">
+                <div 
+                  className="absolute left-0 top-1/2 -translate-y-1/2 h-1 rounded-full transition-all duration-300 group-hover:h-1.5 shadow-lg"
+                  style={{ 
+                    width: `${(currentTime / (duration || 1)) * 100}%`,
+                    background: "linear-gradient(90deg, #007AFF, #34C759, #007AFF)",
+                    boxShadow: "0 0 8px rgba(0, 122, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
+                  }}
+                ></div>
+                
+                {/* Glass Thumb with Glow */}
+                <div 
+                  className="absolute h-3 w-3 rounded-full bg-white/90 backdrop-blur-sm transform -translate-y-1/2 top-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/30"
+                  style={{ 
+                    left: `calc(${(currentTime / (duration || 1)) * 100}% - 6px)`,
+                    boxShadow: "0 2px 8px rgba(0, 122, 255, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)"
+                  }}
+                >
+                  <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white/40 to-white/10"></div>
+                </div>
+              </div>
+              
+              {/* Glass Time Tooltip */}
               <div 
-                className="absolute h-1.5 w-1.5 rounded-full bg-white transform -translate-y-1/2 top-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
+                className="absolute -top-8 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-xl text-white text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none border border-white/10 shadow-xl"
                 style={{ 
-                  left: `calc(${(currentTime / (duration || 1)) * 100}% - 3px)`
+                  left: `calc(${(currentTime / (duration || 1)) * 100}% - 20px)`,
+                  transform: "translateX(-50%)"
                 }}
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff4f9b] to-[#60a5fa]"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/5 to-transparent"></div>
+                <span className="relative">{formatTime(currentTime)}</span>
               </div>
             </div>
-            
-            {/* Compact Time Tooltip */}
-            <div 
-              className="absolute -top-5 px-1 py-0.5 rounded-sm bg-black/95 text-white text-[10px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none backdrop-blur-sm"
-              style={{ 
-                left: `calc(${(currentTime / (duration || 1)) * 100}% - 15px)`,
-                transform: "translateX(-50%)"
-              }}
-            >
-              {formatTime(currentTime)}
-            </div>
-          </div>
 
-          {/* Ultra-Compact Control Row */}
-          <div className="flex items-center justify-between text-white text-xs">
-            {/* Left Controls Group */}
-            <div className="flex items-center gap-1">
-              {/* Primary Play Button */}
-              <button 
-                onClick={togglePlay}
-                className="p-1 hover:bg-white/10 rounded-full transition-all duration-200 group"
-                aria-label={isPlaying ? "Tạm dừng" : "Phát"}
-              >
-                {isPlaying ? (
-                  <Pause className="w-3.5 h-3.5 text-white group-hover:text-[#ff4f9b]" />
-                ) : (
-                  <Play className="w-3.5 h-3.5 text-white group-hover:text-[#ff4f9b]" />
-                )}
-              </button>
-
-              {/* Skip Controls */}
-              <div className="flex items-center">
+            {/* Liquid Glass Control Row */}
+            <div className="flex items-center justify-between text-white">
+              {/* Glass Left Controls */}
+              <div className="flex items-center gap-2">
+                {/* Glass Play Button */}
                 <button 
-                  onClick={() => skip(-10)}
-                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
-                  aria-label="Tua lại 10 giây"
+                  onClick={togglePlay}
+                  className="relative p-2 rounded-2xl backdrop-blur-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.12] transition-all duration-300 group shadow-lg hover:shadow-xl"
+                  aria-label={isPlaying ? "Tạm dừng" : "Phát"}
                 >
-                  <SkipBack className="w-3 h-3 text-white/80 group-hover:text-[#60a5fa]" />
-                </button>
-                <button 
-                  onClick={() => skip(10)}
-                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
-                  aria-label="Tua đi 10 giây"
-                >
-                  <SkipForward className="w-3 h-3 text-white/80 group-hover:text-[#60a5fa]" />
-                </button>
-              </div>
-
-              {/* Volume Group */}
-              <div className="flex items-center gap-1">
-                <button 
-                  onClick={toggleMute}
-                  className="p-0.5 hover:bg-white/5 rounded transition-all duration-200 group"
-                  aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
-                >
-                  {isMuted || volume === 0 ? (
-                    <VolumeX className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4 text-white relative z-10 group-hover:text-blue-400 transition-colors" />
                   ) : (
-                    <Volume2 className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
+                    <Play className="w-4 h-4 text-white relative z-10 group-hover:text-green-400 transition-colors ml-0.5" />
                   )}
                 </button>
 
-                {/* Compact Volume Slider - Desktop only */}
-                <div className="hidden md:flex w-8">
-                  <Slider
-                    value={[isMuted ? 0 : volume]}
-                    min={0}
-                    max={100}
-                    step={1}
-                    onValueChange={handleVolumeChange}
-                    className="h-0.5 opacity-70 hover:opacity-100 transition-opacity"
-                  />
-                </div>
-              </div>
-
-              {/* Minimal Time Display */}
-              <div className="text-[10px] text-white/70 ml-0.5 font-mono">
-                {formatTime(currentTime)}<span className="text-white/40">/{formatTime(duration)}</span>
-              </div>
-            </div>
-
-            {/* Right Controls Group */}
-            <div className="flex items-center gap-0.5">
-              {/* Episode Navigation */}
-              {(onPrevEpisode || onNextEpisode) && episodeInfo && (
-                <div className="flex items-center bg-white/5 rounded-full px-1 py-0.5">
-                  {onPrevEpisode && episodeInfo.index > 0 && (
-                    <button
-                      onClick={onPrevEpisode}
-                      className="p-0.5 rounded-full hover:bg-white/10 transition-all group"
-                    >
-                      <ChevronLeft className="w-2.5 h-2.5 text-white/80 group-hover:text-[#60a5fa]" />
-                    </button>
-                  )}
-                  
-                  <span className="text-[10px] text-white/90 px-1 font-mono">
-                    {episodeInfo.index + 1}/{episodeInfo.total}
-                  </span>
-                  
-                  {onNextEpisode && episodeInfo.index < episodeInfo.total - 1 && (
-                    <button
-                      onClick={onNextEpisode}
-                      className="p-0.5 rounded-full hover:bg-white/10 transition-all group"
-                    >
-                      <ChevronLeft className="w-2.5 h-2.5 text-white/80 group-hover:text-[#60a5fa] rotate-180" />
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {/* Server/Language Pills */}
-              {((serverOptions.length > 0 && onServerChange) || (languageOptions.length > 0 && onLanguageChange)) && (
-                <div className="flex items-center gap-0.5">
-                  {serverOptions.length > 0 && onServerChange && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="px-1 py-0.5 bg-gradient-to-r from-[#ff4f9b]/80 to-[#60a5fa]/80 text-white text-[9px] rounded-sm hover:opacity-90 transition-all font-medium min-w-[16px]">
-                          S{currentServerIndex + 1}
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent 
-                        side="top" 
-                        align="end" 
-                        className="w-28 bg-black/95 border-white/10 backdrop-blur-md text-white"
-                      >
-                        {serverOptions.map((server, index) => (
-                          <DropdownMenuItem
-                            key={index}
-                            onClick={() => onServerChange(server.index)}
-                            className={`text-[10px] cursor-pointer hover:bg-white/10 px-2 py-1 ${
-                              currentServerIndex === server.index ? 'bg-white/20 text-[#ff4f9b]' : ''
-                            }`}
-                          >
-                            {server.name}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-                  
-                  {languageOptions.length > 0 && onLanguageChange && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="px-1 py-0.5 bg-gradient-to-r from-[#ff4f9b]/80 to-[#60a5fa]/80 text-white text-[9px] rounded-sm hover:opacity-90 transition-all font-medium min-w-[16px]">
-                          {languageOptions[currentLanguageIndex]?.name?.slice(0, 2) || 'VN'}
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent 
-                        side="top" 
-                        align="end" 
-                        className="w-24 bg-black/95 border-white/10 backdrop-blur-md text-white"
-                      >
-                        {languageOptions.map((lang, index) => (
-                          <DropdownMenuItem
-                            key={index}
-                            onClick={() => onLanguageChange(lang.index)}
-                            className={`text-[10px] cursor-pointer hover:bg-white/10 px-2 py-1 ${
-                              currentLanguageIndex === lang.index ? 'bg-white/20 text-[#ff4f9b]' : ''
-                            }`}
-                          >
-                            {lang.name}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-                </div>
-              )}
-
-              {/* Speed Control */}
-              <button 
-                onClick={() => {
-                  const currentIndex = playbackSpeeds.indexOf(playbackSpeed);
-                  const nextIndex = (currentIndex + 1) % playbackSpeeds.length;
-                  changePlaybackSpeed(playbackSpeeds[nextIndex]);
-                }}
-                className={`text-[9px] px-1 py-0.5 rounded-sm hover:bg-white/10 transition-all font-mono ${
-                  playbackSpeed !== 1 ? 'text-[#ff4f9b]' : 'text-white/70'
-                }`}
-              >
-                {playbackSpeed}x
-              </button>
-
-              {/* Fullscreen */}
-              <button 
-                onClick={toggleFullscreen}
-                className="p-0.5 hover:bg-white/10 rounded transition-all duration-200 group"
-                aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
-              >
-                {isFullscreen ? (
-                  <Minimize className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
-                ) : (
-                  <Maximize className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
-                )}
-              </button>
-
-              {/* Minimal Settings */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="p-0.5 hover:bg-white/10 rounded transition-all duration-200 group">
-                    <Settings className="w-3 h-3 text-white/80 group-hover:text-[#ff4f9b]" />
+                {/* Glass Skip Controls */}
+                <div className="flex items-center gap-1">
+                  <button 
+                    onClick={() => skip(-10)}
+                    className="relative p-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all duration-300 group"
+                    aria-label="Tua lại 10 giây"
+                  >
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                    <SkipBack className="w-3.5 h-3.5 text-white/90 relative z-10 group-hover:text-blue-400 transition-colors" />
                   </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-32 p-1 bg-black/95 backdrop-blur-md border-white/10 text-white"
+                  <button 
+                    onClick={() => skip(10)}
+                    className="relative p-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all duration-300 group"
+                    aria-label="Tua đi 10 giây"
+                  >
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                    <SkipForward className="w-3.5 h-3.5 text-white/90 relative z-10 group-hover:text-blue-400 transition-colors" />
+                  </button>
+                </div>
+
+                {/* Glass Volume Group */}
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={toggleMute}
+                    className="relative p-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all duration-300 group"
+                    aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
+                  >
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                    {isMuted || volume === 0 ? (
+                      <VolumeX className="w-3.5 h-3.5 text-white/90 relative z-10 group-hover:text-red-400 transition-colors" />
+                    ) : (
+                      <Volume2 className="w-3.5 h-3.5 text-white/90 relative z-10 group-hover:text-green-400 transition-colors" />
+                    )}
+                  </button>
+
+                  {/* Glass Volume Slider - Desktop only */}
+                  <div className="hidden md:flex w-16 px-2 py-1 rounded-xl backdrop-blur-xl bg-white/[0.04] border border-white/[0.06]">
+                    <Slider
+                      value={[isMuted ? 0 : volume]}
+                      min={0}
+                      max={100}
+                      step={1}
+                      onValueChange={handleVolumeChange}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+
+                {/* Glass Time Display */}
+                <div className="px-3 py-1.5 rounded-xl backdrop-blur-xl bg-white/[0.04] border border-white/[0.06] text-xs text-white/90 font-mono">
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.02] to-transparent"></div>
+                  <span className="relative z-10">{formatTime(currentTime)}</span>
+                  <span className="relative z-10 text-white/50 mx-1">/</span>
+                  <span className="relative z-10 text-white/70">{formatTime(duration)}</span>
+                </div>
+              </div>
+
+              {/* Glass Right Controls */}
+              <div className="flex items-center gap-2">
+                {/* Glass Episode Navigation */}
+                {(onPrevEpisode || onNextEpisode) && episodeInfo && (
+                  <div className="flex items-center rounded-2xl backdrop-blur-xl bg-white/[0.06] border border-white/[0.08] px-2 py-1">
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                    {onPrevEpisode && episodeInfo.index > 0 && (
+                      <button
+                        onClick={onPrevEpisode}
+                        className="relative p-1 rounded-lg hover:bg-white/[0.12] transition-all group"
+                      >
+                        <ChevronLeft className="w-3 h-3 text-white/90 group-hover:text-blue-400 transition-colors" />
+                      </button>
+                    )}
+                    
+                    <span className="relative text-xs text-white/90 px-2 font-mono">
+                      {episodeInfo.index + 1}/{episodeInfo.total}
+                    </span>
+                    
+                    {onNextEpisode && episodeInfo.index < episodeInfo.total - 1 && (
+                      <button
+                        onClick={onNextEpisode}
+                        className="relative p-1 rounded-lg hover:bg-white/[0.12] transition-all group"
+                      >
+                        <ChevronLeft className="w-3 h-3 text-white/90 group-hover:text-blue-400 transition-colors rotate-180" />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Glass Server/Language Controls */}
+                {((serverOptions.length > 0 && onServerChange) || (languageOptions.length > 0 && onLanguageChange)) && (
+                  <div className="flex items-center gap-1">
+                    {serverOptions.length > 0 && onServerChange && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="relative px-2 py-1.5 rounded-xl backdrop-blur-xl bg-gradient-to-r from-blue-500/20 to-green-500/20 border border-white/[0.12] text-white text-xs font-medium hover:bg-white/[0.1] transition-all">
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+                            <span className="relative z-10">S{currentServerIndex + 1}</span>
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent 
+                          side="top" 
+                          align="end" 
+                          className="w-32 backdrop-blur-xl bg-black/80 border-white/[0.15] text-white rounded-2xl shadow-2xl"
+                        >
+                          {serverOptions.map((server, index) => (
+                            <DropdownMenuItem
+                              key={index}
+                              onClick={() => onServerChange(server.index)}
+                              className={`text-xs cursor-pointer hover:bg-white/10 px-3 py-2 rounded-xl transition-all ${
+                                currentServerIndex === server.index ? 'bg-white/20 text-blue-400' : ''
+                              }`}
+                            >
+                              {server.name}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
+                    
+                    {languageOptions.length > 0 && onLanguageChange && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="relative px-2 py-1.5 rounded-xl backdrop-blur-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-white/[0.12] text-white text-xs font-medium hover:bg-white/[0.1] transition-all">
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+                            <span className="relative z-10">{languageOptions[currentLanguageIndex]?.name?.slice(0, 2) || 'VN'}</span>
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent 
+                          side="top" 
+                          align="end" 
+                          className="w-28 backdrop-blur-xl bg-black/80 border-white/[0.15] text-white rounded-2xl shadow-2xl"
+                        >
+                          {languageOptions.map((lang, index) => (
+                            <DropdownMenuItem
+                              key={index}
+                              onClick={() => onLanguageChange(lang.index)}
+                              className={`text-xs cursor-pointer hover:bg-white/10 px-3 py-2 rounded-xl transition-all ${
+                                currentLanguageIndex === lang.index ? 'bg-white/20 text-purple-400' : ''
+                              }`}
+                            >
+                              {lang.name}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
+                  </div>
+                )}
+
+                {/* Glass Speed Control */}
+                <button 
+                  onClick={() => {
+                    const currentIndex = playbackSpeeds.indexOf(playbackSpeed);
+                    const nextIndex = (currentIndex + 1) % playbackSpeeds.length;
+                    changePlaybackSpeed(playbackSpeeds[nextIndex]);
+                  }}
+                  className={`relative px-2 py-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] border border-white/[0.08] text-xs font-mono hover:bg-white/[0.12] transition-all ${
+                    playbackSpeed !== 1 ? 'text-yellow-400 border-yellow-400/30' : 'text-white/90'
+                  }`}
                 >
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                  <span className="relative z-10">{playbackSpeed}x</span>
+                </button>
+
+                {/* Glass Fullscreen */}
+                <button 
+                  onClick={toggleFullscreen}
+                  className="relative p-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all duration-300 group"
+                  aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
+                >
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                  {isFullscreen ? (
+                    <Minimize className="w-4 h-4 text-white/90 relative z-10 group-hover:text-orange-400 transition-colors" />
+                  ) : (
+                    <Maximize className="w-4 h-4 text-white/90 relative z-10 group-hover:text-blue-400 transition-colors" />
+                  )}
+                </button>
+
+                {/* Glass Settings */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="relative p-1.5 rounded-xl backdrop-blur-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all duration-300 group">
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+                      <Settings className="w-4 h-4 text-white/90 relative z-10 group-hover:text-blue-400 transition-colors" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-40 p-2 backdrop-blur-xl bg-black/80 border-white/[0.15] text-white rounded-2xl shadow-2xl"
+                  >
                   {/* Quality Selection for Mobile */}
                   {quality.length > 0 && (
                     <>
@@ -2032,54 +2058,60 @@ export default function VideoPlayer({
                     </div>
                   </div>
                 </DropdownMenuContent>
-              </DropdownMenu>
+                </DropdownMenu>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Theater Mode Button - Ẩn khi ở chế độ toàn màn hình */}
-              {!isFullscreen && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button 
-                        className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-1.5 relative group"
-                        onClick={toggleTheaterMode}
-                        aria-label={isTheaterMode ? "Thoát chế độ chiếu rạp" : "Chế độ chiếu rạp"}
-                      >
-                        <div className="absolute -inset-1 rounded-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <Lightbulb className={`w-5 h-5 relative ${isTheaterMode ? 'text-[#ff4f9b]' : ''}`} />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="bg-black/90 text-white border-white/10">
-                      <p>{isTheaterMode ? "Thoát chế độ chiếu rạp (T)" : "Chế độ chiếu rạp (T)"}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-
-              {/* Fullscreen Button */}
+        {/* Desktop Theater/Fullscreen Controls */}
+        {!isMobile && (
+          <div className="absolute bottom-6 right-6 flex items-center gap-3">
+            {/* Theater Mode Button - Hidden when fullscreen */}
+            {!isFullscreen && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button 
-                      className="focus:outline-none hover:text-[#ff4f9b] transition-colors duration-200 p-1.5 relative group"
-                      onClick={toggleFullscreen}
-                      aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
-                    >
-                      <div className="absolute -inset-1 rounded-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      {isFullscreen ? (
-                        <Minimize className="w-5 h-5 relative" />
-                      ) : (
-                        <Maximize className="w-5 h-5 relative" />
-                      )}
+                className="relative p-2 rounded-2xl backdrop-blur-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.12] transition-all duration-300 group shadow-lg hover:shadow-xl"
+                onClick={toggleTheaterMode}
+                aria-label={isTheaterMode ? "Thoát chế độ chiếu rạp" : "Chế độ chiếu rạp"}
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+                <Lightbulb className={`w-5 h-5 text-white relative z-10 group-hover:text-yellow-400 transition-colors ${isTheaterMode ? 'text-yellow-400' : ''}`} />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="bg-black/90 text-white border-white/10">
-                    <p>{isFullscreen ? "Thoát toàn màn hình (F)" : "Toàn màn hình (F)"}</p>
+                  <TooltipContent side="top" className="backdrop-blur-xl bg-black/80 text-white border-white/10 rounded-lg">
+                    <p>{isTheaterMode ? "Thoát chế độ chiếu rạp (T)" : "Chế độ chiếu rạp (T)"}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            </div>
+            )}
+
+            {/* Glass Fullscreen Button */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button 
+                    className="relative p-2 rounded-2xl backdrop-blur-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.12] transition-all duration-300 group shadow-lg hover:shadow-xl"
+                    onClick={toggleFullscreen}
+                    aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
+                  >
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.05] to-transparent"></div>
+                    {isFullscreen ? (
+                      <Minimize className="w-5 h-5 text-white relative z-10 group-hover:text-orange-400 transition-colors" />
+                    ) : (
+                      <Maximize className="w-5 h-5 text-white relative z-10 group-hover:text-blue-400 transition-colors" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="backdrop-blur-xl bg-black/80 text-white border-white/10 rounded-lg">
+                  <p>{isFullscreen ? "Thoát toàn màn hình (F)" : "Toàn màn hình (F)"}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
