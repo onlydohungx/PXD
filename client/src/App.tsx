@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { IdleModeProvider } from '@/components/IdleModeProvider';
 import { OfflineIndicator } from '@/components/offline-indicator';
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt';
+import { WebsiteAnnouncementBanner } from '@/components/website-announcement-banner';
 
 import { useResourcePreloader } from '@/hooks/use-resource-preloader';
 
@@ -94,6 +95,7 @@ function App() {
         >
           <div className="flex flex-col min-h-screen bg-background relative">
             <OfflineIndicator />
+            <WebsiteAnnouncementBanner />
             <Navbar />
             <main className="flex-grow pt-20 lg:pt-24 relative z-10">
               <MainRouter />
