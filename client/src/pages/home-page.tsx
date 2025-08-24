@@ -44,6 +44,7 @@ import { HeroSkeleton, MovieGridSkeleton, SectionSkeleton } from "@/components/u
 import { TrendingMovies } from "@/components/trending-movies";
 import { ContinueWatchingCard } from "@/components/continue-watching-card";
 import { LazySection } from "@/components/lazy-section";
+import { WebsiteAnnouncementBanner } from "@/components/website-announcement-banner";
 
 export default function HomePage() {
   const { isAuthenticated } = useAuth();
