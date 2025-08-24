@@ -95,8 +95,8 @@ function App() {
         >
           <div className="flex flex-col min-h-screen bg-background relative">
             <OfflineIndicator />
-            <WebsiteAnnouncementBanner />
             <Navbar />
+            <WebsiteAnnouncementBanner />
             <main className="flex-grow pt-20 lg:pt-24 relative z-10">
               <MainRouter />
             </main>
